@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+    padding-top: 80px;
+    padding-bottom: 20px;
+    background: linear-gradient( 135deg, #fdfcfb 0%, #f5e9e0 100%)
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+.img{
+    width: 75px;
+}
+
+
+ /*
+
+ */ 
+.container {
+   
+   
+    background: white;
+}
+  
+.title {
+    font-size: 32px;
+    font-weight: 900;
+    text-align: center;
+    margin: 10px 0;
+    color: sandybrown;
+}
+
+.subtitle {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 10px 0;
+    color: lawngreen;
+}
+
+a.subtitle {
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.button {
+    text-decoration: none;
+    background-color: #196fc6;
+    padding: 10px 25px;
+    color: white;
+    border-radius: 10px;
+}
+
+.description {
+    font-weight: 300;
+    font-size: 17px;
+    text-align: justify-all;
+}
+
+.picture {
+    width: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+    ul ul {
+        padding-left: 20px;
+    }
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
