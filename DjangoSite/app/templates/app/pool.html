@@ -1,0 +1,17 @@
+
+
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+ <h2 class="title">{{ title }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{form}}
+        <br>
+        <input type="submit" value="Отправить" class="btn btn-default">
+    </form>
+
+{% endblock %}

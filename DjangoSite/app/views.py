@@ -5,6 +5,7 @@ Definition of views.
 from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest
+from .forms import ReviewForm
 
 def home(request):
     assert isinstance(request, HttpRequest)
@@ -52,3 +53,15 @@ def link(request):
             'year':datetime.now().year,
         }
     )
+
+def pool(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            return redirect('home')
+    else:
+        form = ReviewForm()
+    return render(request, 'app/pool.html', {'form': form})
+
+
+
