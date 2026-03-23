@@ -4,6 +4,7 @@
 {% load static %}
 
 {% block content %}
+{% if not data %}
 
  <h2 class="title">{{ title }}</h2>
 
@@ -25,5 +26,16 @@
         {{form.consent}} <br><br>
         <input type="submit" value="Отправить" class="btn btn-default">
     </form>
-
+{% else %}
+   <br><h2>Благодарим за предоставленную информацию!</h2>
+   <h3>Ваш выбор следующий:</h3>
+   <ul>
+       <li><span>Ваше имя: </span>{{data.name}}</li>
+       <li><span>Ваш email: </span>{{data.email}}</li>
+       <li><span>Выбранная вами оценка: </span>{{data.rating}}</li>
+       <li><span>Что вам больше всего понравилось: </span>{{data.liked}}</li>
+       <li><span>Возраст вашего ребенка: </span>{{data.age}}</li>
+       <li><span>Ваш отзыв: </span>{{data.message}}</li>
+   </ul>
+{% endif %}
 {% endblock %}

@@ -81,11 +81,11 @@ def pool(request):
             data['message'] = form.cleaned_data['message']
             data['consent'] = form.cleaned_data['consent']
             
-            if form.cleaned_data['notice']:
+            if form.cleaned_data.get('notice'):
                 data['notice'] = 'Да'
             else:
                 data['notice'] = 'Нет'
-            form = ReviewForm() 
+
     else:
         form = ReviewForm()
     return render(request, 'app/pool.html', {

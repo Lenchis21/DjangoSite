@@ -19,7 +19,6 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                widget=forms.PasswordInput({
                                    'class': 'form-control',
                                    'placeholder':'Password'}))
-
 class ReviewForm(forms.Form):
     name = forms.CharField(label='Ваше имя', min_length = 2,  max_length=100)
     email = forms.EmailField(label='Email', min_length = 7)
@@ -36,7 +35,8 @@ class ReviewForm(forms.Form):
     liked = forms.MultipleChoiceField(
         label='Что вам особенно понравилось?',
         widget=forms.CheckboxSelectMultiple,
-        choices= [
+        choices= 
+        [
             ('diagnostic', 'Диагностика'),
             ('sound', 'Постановка звуков'),
             ('message', 'Логопедический массаж'),
@@ -48,11 +48,13 @@ class ReviewForm(forms.Form):
    
     age = forms.ChoiceField(
         label='Возраст ребёнка',
-        choices= [('3-4', '3-4 года'),
-        ('4-5', '4-5 лет'),
-        ('5-6', '5-6 лет'),
-        ('6-7', '6-7 лет'),
-        ('7+', 'Старше 7 лет'),
+        choices= 
+        [
+            ('3-4', '3-4 года'),
+            ('4-5', '4-5 лет'),
+            ('5-6', '5-6 лет'),
+            ('6-7', '6-7 лет'),
+            ('7+', 'Старше 7 лет'),
         ]
     )
     message = forms.CharField(label = 'Комментарий', widget=forms.Textarea(attrs={'rows':12, 'cols':50}))
