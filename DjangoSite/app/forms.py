@@ -3,9 +3,7 @@ Definition of forms.
 """
 
 from django import forms
-from .models import RATING_CHOICES 
-from .models import LIKED_CHOICES 
-from .models import AGE_CHOICES 
+
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
@@ -23,27 +21,41 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                    'placeholder':'Password'}))
 
 class ReviewForm(forms.Form):
-    name = forms.CharField(label='Ваше имя', max_length=100)
-    email = forms.EmailField(label='Email')
+    name = forms.CharField(label='Ваше имя', min_length = 2,  max_length=100)
+    email = forms.EmailField(label='Email', min_length = 7)
+
+    rating = forms.ChoiceField(
+        label='Оцените нашу работу', 
+        choices= [(5, 'Отлично'),
+                  (4, 'Хорошо'),
+                  (3, 'Удовлетворительно'),
+                  (2, 'Плохо')],
+        widget=forms.RadioSelect
+    )
 
     liked = forms.MultipleChoiceField(
         label='Что вам особенно понравилось?',
         widget=forms.CheckboxSelectMultiple,
-        choices= LIKED_CHOICES,
+        choices= [
+            ('diagnostic', 'Диагностика'),
+            ('sound', 'Постановка звуков'),
+            ('message', 'Логопедический массаж'),
+            ('speech', 'Развитие речи'),
+            ('school', 'Подготовка к школе'),
+            ('other', 'Другое')
+        ]
     )
-    rating = forms.ChoiceField(
-        choices= RATING_CHOICES, 
-        label='Оцените нашу работу', 
-        widget=forms.RadioSelect
-    )
-    # Один вариант из списка (выпадающее меню)
+   
     age = forms.ChoiceField(
         label='Возраст ребёнка',
-        choices=AGE_CHOICES
+        choices= [('3-4', '3-4 года'),
+        ('4-5', '4-5 лет'),
+        ('5-6', '5-6 лет'),
+        ('6-7', '6-7 лет'),
+        ('7+', 'Старше 7 лет'),
+        ]
     )
-
-
-    message = forms.CharField(widget=forms.Textarea, label = 'Комментарий')
+    message = forms.CharField(label = 'Комментарий', widget=forms.Textarea(attrs={'rows':12, 'cols':50}))
     consent = forms.BooleanField(label='Согласие на обработку', required=True)
 
 

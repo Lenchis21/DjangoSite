@@ -9,8 +9,20 @@
 
     <form method="post">
         {% csrf_token %}
-        {{form.as_p}}
-        <br>
+        <label for="{{form.name.id_for_label}}">{{ form.name.label }}:</label>
+        {{form.name}} <br><br>
+        <label for="{{form.email.id_for_label}}">{{ form.email.label }}:</label>
+        {{form.email}} <br><br>
+        <label for="{{form.rating.id_for_label}}">{{ form.rating.label }}:</label>
+        {{form.rating}} <br><br>
+        <label for="{{form.liked.id_for_label}}">{{ form.liked.label }}:</label>
+        {{form.liked}} <br><br>
+        <label for="{{form.age.id_for_label}}">{{ form.age.label }}:</label>
+        {{form.age}} <br><br>
+        <label for="{{form.message.id_for_label}}">{{ form.message.label }}:</label>
+        {{form.message}} <br><br>
+        <label for="{{form.consent.id_for_label}}">{{ form.consent.label }}:</label>
+        {{form.consent}} <br><br>
         <input type="submit" value="Отправить" class="btn btn-default">
     </form>
 
