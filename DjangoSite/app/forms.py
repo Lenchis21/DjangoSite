@@ -19,6 +19,7 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                widget=forms.PasswordInput({
                                    'class': 'form-control',
                                    'placeholder':'Password'}))
+
 class ReviewForm(forms.Form):
     name = forms.CharField(label='Ваше имя', min_length = 2,  max_length=100)
     email = forms.EmailField(label='Email', min_length = 7)

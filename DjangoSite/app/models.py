@@ -23,6 +23,7 @@ AGE_CHOICES = [
     ('7+', 'Старше 7 лет'),
     ]
 
+"""
 class Review(models.Model):
     name = models.CharField(
         max_length=100, verbose_name='Имя'
@@ -41,3 +42,4 @@ class Review(models.Model):
         verbose_name='Согласие на обработку'
     )
     age = models.CharField(max_length = 50, blank = True, choices = AGE_CHOICES, verbose_name = 'Возраст ребёнка')
+"""

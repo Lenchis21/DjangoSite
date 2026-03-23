@@ -27,15 +27,15 @@
         <input type="submit" value="Отправить" class="btn btn-default">
     </form>
 {% else %}
-   <br><h2>Благодарим за предоставленную информацию!</h2>
-   <h3>Ваш выбор следующий:</h3>
+   <br><h2 class="title">Благодарим за предоставленную информацию!</h2>
+   <h3 class="subtitle">Ваш выбор следующий:</h3>
    <ul>
-       <li><span>Ваше имя: </span>{{data.name}}</li>
-       <li><span>Ваш email: </span>{{data.email}}</li>
-       <li><span>Выбранная вами оценка: </span>{{data.rating}}</li>
-       <li><span>Что вам больше всего понравилось: </span>{{data.liked}}</li>
-       <li><span>Возраст вашего ребенка: </span>{{data.age}}</li>
-       <li><span>Ваш отзыв: </span>{{data.message}}</li>
+       <li class="description"><span>Ваше имя: </span>{{data.name}}</li>
+       <li class="description"><span>Ваш email: </span>{{data.email}}</li>
+       <li class="description"><span>Что вам больше всего понравилось: </span>{{data.liked}}</li>
+       <li class="description"><span>Выбранная вами оценка: </span>{{data.rating}}</li>
+       <li class="description"><span>Возраст вашего ребенка: </span>{{data.age}}</li>
+       <li class="description"><span>Ваш отзыв: </span>{{data.message}}</li>
    </ul>
 {% endif %}
 {% endblock %}

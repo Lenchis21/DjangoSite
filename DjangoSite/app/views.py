@@ -69,6 +69,7 @@ def pool(request):
     age = {'3-4' : '3-4 года', '4-5' : '4-5 лет', '5-6' : '5-6 лет',
             '6-7' : '6-7 лет', '7+' : 'Старше 7 лет'
           }
+    title = 'Опрос для родителей'
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -90,7 +91,8 @@ def pool(request):
         form = ReviewForm()
     return render(request, 'app/pool.html', {
         'form': form,
-        'data': data
+        'data': data,
+        'title':title
     })
 
 
