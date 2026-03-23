@@ -6,6 +6,8 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest
 from .forms import ReviewForm
+from django.shortcuts import render, redirect  
+
 
 def home(request):
     assert isinstance(request, HttpRequest)
@@ -58,7 +60,7 @@ def pool(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            return redirect('home')
+            return redirect('/')
     else:
         form = ReviewForm()
     return render(request, 'app/pool.html', {'form': form})
