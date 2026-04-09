@@ -7,6 +7,9 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from .forms import ReviewForm
 from django.shortcuts import render, redirect  
+from django.contrib.auth.forms import UserCreationForm
+
+
 
 
 def home(request):
@@ -94,6 +97,8 @@ def pool(request):
         'data': data,
         'title':title
     })
+
+
 
 
 

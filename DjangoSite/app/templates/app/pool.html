@@ -1,41 +1,87 @@
-
-
 {% extends "app/layout.html" %}
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+
+<h2 class="title">{{ title }}</h2>
+
 {% if not data %}
+<div class="row">
+    <div class="col-md-8">
+        <section id="feedbackForm">
+            <form method="post" class="form-horizontal">
+                {% csrf_token %}
+                <hr />
 
- <h2 class="title">{{ title }}</h2>
+                <div class="form-group">
+                    <label for="{{form.name.id_for_label}}" class="col-md-3 control-label">{{ form.name.label }}:</label>
+                    <div class="col-md-9">{{ form.name }}</div>
+                </div>
 
-    <form method="post">
-        {% csrf_token %}
-        <label for="{{form.name.id_for_label}}">{{ form.name.label }}:</label>
-        {{form.name}} <br><br>
-        <label for="{{form.email.id_for_label}}">{{ form.email.label }}:</label>
-        {{form.email}} <br><br>
-        <label for="{{form.rating.id_for_label}}">{{ form.rating.label }}:</label>
-        {{form.rating}} <br><br>
-        <label for="{{form.liked.id_for_label}}">{{ form.liked.label }}:</label>
-        {{form.liked}} <br><br>
-        <label for="{{form.age.id_for_label}}">{{ form.age.label }}:</label>
-        {{form.age}} <br><br>
-        <label for="{{form.message.id_for_label}}">{{ form.message.label }}:</label>
-        {{form.message}} <br><br>
-        <label for="{{form.consent.id_for_label}}">{{ form.consent.label }}:</label>
-        {{form.consent}} <br><br>
-        <input type="submit" value="Отправить" class="btn btn-default">
-    </form>
+                <div class="form-group">
+                    <label for="{{form.email.id_for_label}}" class="col-md-3 control-label">{{ form.email.label }}:</label>
+                    <div class="col-md-9">{{ form.email }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{form.rating.id_for_label}}" class="col-md-3 control-label">{{ form.rating.label }}:</label>
+                    <div class="col-md-9">{{ form.rating }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{form.liked.id_for_label}}" class="col-md-3 control-label">{{ form.liked.label }}:</label>
+                    <div class="col-md-9">{{ form.liked }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{form.age.id_for_label}}" class="col-md-3 control-label">{{ form.age.label }}:</label>
+                    <div class="col-md-9">{{ form.age }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{form.message.id_for_label}}" class="col-md-3 control-label">{{ form.message.label }}:</label>
+                    <div class="col-md-9">{{ form.message }}</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-9">
+                        <div class="checkbox">
+                            <label>
+                                {{ form.consent }} {{ form.consent.label }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-9">
+                        <input type="submit" value="Отправить" class="btn btn-default" />
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
 {% else %}
-   <br><h2 class="title">Благодарим за предоставленную информацию!</h2>
-   <h3 class="subtitle">Ваш выбор следующий:</h3>
-   <ul>
-       <li class="description"><span>Ваше имя: </span>{{data.name}}</li>
-       <li class="description"><span>Ваш email: </span>{{data.email}}</li>
-       <li class="description"><span>Что вам больше всего понравилось: </span>{{data.liked}}</li>
-       <li class="description"><span>Выбранная вами оценка: </span>{{data.rating}}</li>
-       <li class="description"><span>Возраст вашего ребенка: </span>{{data.age}}</li>
-       <li class="description"><span>Ваш отзыв: </span>{{data.message}}</li>
-   </ul>
+<div class="row">
+    <div class="col-md-8">
+        <br><h3>Благодарим за предоставленную информацию!</h3>
+        <p>Ваш выбор следующий:</p>
+        <ul class="list-unstyled">
+            <li><strong>Имя:</strong> {{ data.name }}</li>
+            <li><strong>Email:</strong> {{ data.email }}</li>
+            <li><strong>Понравилось:</strong> {{ data.liked }}</li>
+            <li><strong>Оценка:</strong> {{ data.rating }}</li>
+            <li><strong>Возраст ребенка:</strong> {{ data.age }}</li>
+            <li><strong>Отзыв:</strong> {{ data.message }}</li>
+        </ul>
+    </div>
+</div>
 {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
 {% endblock %}
