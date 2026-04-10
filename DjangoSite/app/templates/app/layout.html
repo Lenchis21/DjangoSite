@@ -24,8 +24,12 @@
                     <li><a href="{% url 'about' %}">О нас</a></li>
                     <li><a href="{% url 'link' %}">Полезные ссылки</a></li>
                     <li><a href="{% url 'pool' %}">Обратная связь</a></li>
+                    {% if not user.is_authenticated %}
+                    <li><a href="{% url 'registration' %}">Регистрация</a></li>
+                    {% endif %}
                 </ul>
                 {% include 'app/loginpartial.html' %}
+              
             </div>
         </div>
     </div>
