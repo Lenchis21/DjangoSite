@@ -5,8 +5,10 @@ Definition of forms.
 from django import forms
 
 
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm  
 from django.utils.translation import ugettext_lazy as _
+
+"""from app.views import UserCreationForm"""
 
 
 class BootstrapAuthenticationForm(AuthenticationForm):
@@ -61,6 +63,11 @@ class ReviewForm(forms.Form):
     message = forms.CharField(label = 'Комментарий', widget=forms.Textarea(attrs={'rows':12, 'cols':50}))
     consent = forms.BooleanField(label='Согласие на обработку', required=True)
 
-
+class BootstrapRegistrationForm(UserCreationForm):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            for field in self.fields.values():
+                field.widget.attrs.update({'class': 'form-control'})
+                field.help_text = ''
 
 
