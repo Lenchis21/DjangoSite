@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib import admin
 from datetime import datetime
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 RATING_CHOICES = [
@@ -55,6 +56,7 @@ class Blog(models.Model):
     description = models.TextField(verbose_name="Краткое содержание")
     content = models.TextField(verbose_name="Полное содержание")
     posted = models.DateTimeField(default=datetime.now(), db_index = True, verbose_name= "Опубликована")
+    author = models.ForeignKey(User, null = True, blank = True, on_delete = models.SET_NULL, verbose_name="Автор")
 
     def __str__(self):
         return self.title

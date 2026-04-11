@@ -6,11 +6,10 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
-
 from django.contrib.auth.forms import UserCreationForm
-
 from .forms import BootstrapRegistrationForm, ReviewForm
-
+from django.db import models
+from .models import Blog
 
 def home(request):
     assert isinstance(request, HttpRequest)
@@ -120,6 +119,34 @@ def registration(request):
         }
     )
 
+def blog(request):
+    """Renders the blog page."""
+    assert isinstance(request, HttpRequest)
+    posts = Blog.objects.all()
+    return render(
+        request,
+            'app/blog.html',
+            {
+                'title':'Блог',
+                'posts': posts,
+                'year': datetime.now().year,
+            }        
+        
+        )
+def blogpost(request, parametr):
+    """ Renders the blogpost page. """
+    assert isinstance(request, HttpRequest)
+    post_1 = Blog.objects.get(id=parametr)
+    
+    return render(
+            request,
+            'app/blogpost.html',
+            {
+                'post_1': post_1, # передача конкретной статьи в шаблон вебстраницы
+                'year': datetime.now().year,
+                
+            }
+        )
 
 
 

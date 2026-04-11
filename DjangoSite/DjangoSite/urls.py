@@ -15,7 +15,9 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('link/', views.link, name='link'),
     path('pool/', views.pool, name='pool'),
+    path('blog/', views.blog, name='blog'),
     path('registration/', views.registration, name='registration'),
+    path('blogpost/<int:parametr>/', views.blogpost, name='blogpost'),
     path('login/',
          LoginView.as_view
          (

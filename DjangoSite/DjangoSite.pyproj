@@ -59,6 +59,8 @@
     <Content Include="app\static\app\content\favicon.ico" />
     <Content Include="app\static\app\content\Логопед.jpg" />
     <Content Include="app\static\app\content\Логотип.png" />
+    <Content Include="app\templates\app\blog.html" />
+    <Content Include="app\templates\app\blogpost.html" />
     <Content Include="app\templates\app\link.html" />
     <Content Include="app\templates\app\pool.html" />
     <Content Include="app\templates\app\registration.html" />
