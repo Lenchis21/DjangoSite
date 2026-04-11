@@ -1,4 +1,10 @@
-﻿from django.db import models
+﻿from pyexpat import model
+from tabnanny import verbose
+from django.db import models
+from django.contrib import admin
+from datetime import datetime
+from django.urls import reverse
+
 
 RATING_CHOICES = [
     (5, 'Отлично'),
@@ -43,3 +49,23 @@ class Review(models.Model):
     )
     age = models.CharField(max_length = 50, blank = True, choices = AGE_CHOICES, verbose_name = 'Возраст ребёнка')
 """
+
+class Blog(models.Model):
+    title = models.CharField(max_length=100, unique_for_date = "posted", verbose_name="Заголовок")
+    description = models.TextField(verbose_name="Краткое содержание")
+    content = models.TextField(verbose_name="Полное содержание")
+    posted = models.DateTimeField(default=datetime.now(), db_index = True, verbose_name= "Опубликована")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("blogpost", args=[str(self.id)])
+
+    class Meta:
+        db_table = "Posts"
+        ordering = ["-posted"]
+        verbose_name = "статья блога"
+        verbose_name_plural = "cтатья блога"
+
+admin.site.register(Blog)

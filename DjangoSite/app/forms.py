@@ -1,15 +1,6 @@
-﻿"""
-Definition of forms.
-"""
-
-from django import forms
-
-
+﻿from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm  
 from django.utils.translation import ugettext_lazy as _
-
-"""from app.views import UserCreationForm"""
-
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
@@ -23,23 +14,26 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                    'placeholder':'Пароль'}))
 
 class ReviewForm(forms.Form):
-    name = forms.CharField(label='Ваше имя', min_length = 2,  max_length=100)
-    email = forms.EmailField(label='Email', min_length = 7)
-
+    name = forms.CharField(
+        label='Ваше имя', 
+        min_length=2, 
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите имя'})
+    )
+    email = forms.EmailField(
+        label='Email', 
+        min_length=7,
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@example.com'})
+    )
     rating = forms.ChoiceField(
         label='Оцените нашу работу', 
-        choices= [(5, 'Отлично'),
-                  (4, 'Хорошо'),
-                  (3, 'Удовлетворительно'),
-                  (2, 'Плохо')],
-        widget=forms.RadioSelect
+        choices=[(5, 'Отлично'), (4, 'Хорошо'), (3, 'Удовлетворительно'), (2, 'Плохо')], 
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'})
     )
-
     liked = forms.MultipleChoiceField(
-        label='Что вам особенно понравилось?',
-        widget=forms.CheckboxSelectMultiple,
-        choices= 
-        [
+        label='Что вам особенно понравилось?', 
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
+        choices=[
             ('diagnostic', 'Диагностика'),
             ('sound', 'Постановка звуков'),
             ('message', 'Логопедический массаж'),
@@ -48,20 +42,27 @@ class ReviewForm(forms.Form):
             ('other', 'Другое')
         ]
     )
-   
     age = forms.ChoiceField(
-        label='Возраст ребёнка',
-        choices= 
-        [
+        label='Возраст ребёнка', 
+        choices=[
             ('3-4', '3-4 года'),
             ('4-5', '4-5 лет'),
             ('5-6', '5-6 лет'),
             ('6-7', '6-7 лет'),
             ('7+', 'Старше 7 лет'),
-        ]
+        ],
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
-    message = forms.CharField(label = 'Комментарий', widget=forms.Textarea(attrs={'rows':12, 'cols':50}))
-    consent = forms.BooleanField(label='Согласие на обработку', required=True)
+    message = forms.CharField(
+        label='Комментарий', 
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Ваш отзыв...'})
+    )
+    consent = forms.BooleanField(
+        label='Согласие на обработку персональных данных', 
+        required=True,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+
 
 class BootstrapRegistrationForm(UserCreationForm):
         def __init__(self, *args, **kwargs):
