@@ -27,9 +27,9 @@
 
  {% for comment in comments %}
     <hr />
-    <h7>{{comment.date}}</h7>
-    <h5>{{comment.author}}</h5>
-    <p>{{comment.text|linebreaks}}</p>
+    <h7>{{comment.create_at}}</h7>
+    <h5 class="description">{{comment.author}}</h5>
+    <p class="description">{{comment.text|linebreaks}}</p>
 {% endfor %}
 
 

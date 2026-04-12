@@ -56,6 +56,10 @@
     <Folder Include="DjangoSite\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\static\app\content\1.jpeg" />
+    <Content Include="app\static\app\content\2.jpg" />
+    <Content Include="app\static\app\content\3.jpeg" />
+    <Content Include="app\static\app\content\4.png" />
     <Content Include="app\static\app\content\favicon.ico" />
     <Content Include="app\static\app\content\Логопед.jpg" />
     <Content Include="app\static\app\content\Логотип.png" />
