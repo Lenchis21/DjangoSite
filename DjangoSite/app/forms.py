@@ -1,6 +1,8 @@
 ﻿from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm  
 from django.utils.translation import ugettext_lazy as _
+from django.db import models
+from .models import Comment
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
@@ -71,4 +73,17 @@ class BootstrapRegistrationForm(UserCreationForm):
                 field.widget.attrs.update({'class': 'form-control'})
                 field.help_text = ''
 
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text',)  # Здесь только список полей в кортеже или списке
+        labels = {'text': 'Комментарий'}
+        
+        # Настройки внешнего вида (виджеты)
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'class': 'form-control'
+            }),
+        }
 

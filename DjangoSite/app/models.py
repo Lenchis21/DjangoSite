@@ -55,7 +55,7 @@ class Blog(models.Model):
     title = models.CharField(max_length=100, unique_for_date = "posted", verbose_name="Заголовок")
     description = models.TextField(verbose_name="Краткое содержание")
     content = models.TextField(verbose_name="Полное содержание")
-    posted = models.DateTimeField(default=datetime.now(), db_index = True, verbose_name= "Опубликована")
+    posted = models.DateTimeField(default=datetime.now, db_index = True, verbose_name= "Опубликована")
     author = models.ForeignKey(User, null = True, blank = True, on_delete = models.SET_NULL, verbose_name="Автор")
 
     def __str__(self):
@@ -70,4 +70,16 @@ class Blog(models.Model):
         verbose_name = "статья блога"
         verbose_name_plural = "cтатья блога"
 
+class Comment(models.Model):
+    text = models.TextField(verbose_name="Полное содержание")
+    create_at = models.DateTimeField(default=datetime.now, db_index = True, verbose_name= "Дата добавления")
+    author = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Автор")
+    post = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name="Статья")
+
+    class Meta:
+        ordering = ["-create_at"]
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
 admin.site.register(Blog)
+admin.site.register(Comment)

@@ -10,6 +10,8 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import BootstrapRegistrationForm, ReviewForm
 from django.db import models
 from .models import Blog
+from .models import Comment
+from .forms import CommentForm
 
 def home(request):
     assert isinstance(request, HttpRequest)
@@ -137,16 +139,30 @@ def blogpost(request, parametr):
     """ Renders the blogpost page. """
     assert isinstance(request, HttpRequest)
     post_1 = Blog.objects.get(id=parametr)
+    comments = Comment.objects.filter(post=parametr)
     
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment_f = form.save(commit=False)
+            comment_f.author = request.user
+            comment_f.date = datetime.now()
+            comment_f.post = post_1
+            comment_f.save()
+            return redirect('blogpost', parametr=post_1.id)
+    else:
+        form = CommentForm()
+
     return render(
-            request,
-            'app/blogpost.html',
-            {
-                'post_1': post_1, # передача конкретной статьи в шаблон вебстраницы
-                'year': datetime.now().year,
-                
-            }
-        )
+        request,
+        'app/blogpost.html',
+        {
+            'post_1': post_1,
+            'year': datetime.now().year,
+            'comments': comments,
+            'form': form,
+        }
+    )
 
 
 

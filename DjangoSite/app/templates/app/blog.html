@@ -1,8 +1,11 @@
 {% extends "app/layout.html" %}
+{% load staticfiles %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
 
-<h2>{{ title }}</h2>
+<h2 class="title">{{ title }}</h2>
 <br />
 
 {% for post in posts %}
@@ -11,16 +14,15 @@
 
 <div class="">
 
-    <h2> {{post.title}} </h2>
+    <h2 class="subtitle"> {{post.title}} </h2>
 
-    <h4> {{post.posted}} </h4>
+    <h4 class="description"> {{post.posted}} </h4>
 
-    <p> {{post.description}} </p>
+    <p class="description"> {{post.description}} </p>
 
-    <p><a href="{% url 'blogpost' parametr=post.id %}"> Читать далее </a> </p>
+    <a class="btn btn-primary" href="{% url 'blogpost' parametr=post.id %}"> Читать далее </a>
 
 </div>
 
 {% endfor %}
-
 {% endblock %}
