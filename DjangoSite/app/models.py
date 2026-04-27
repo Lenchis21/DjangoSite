@@ -57,6 +57,7 @@ class Blog(models.Model):
     content = models.TextField(verbose_name="Полное содержание")
     posted = models.DateTimeField(default=datetime.now, db_index = True, verbose_name= "Опубликована")
     author = models.ForeignKey(User, null = True, blank = True, on_delete = models.SET_NULL, verbose_name="Автор")
+    image = models.FileField(default = 'temp.jpg', verbose_name = "Путь к картинке")
 
     def __str__(self):
         return self.title

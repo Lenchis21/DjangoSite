@@ -7,7 +7,8 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from .forms import BootstrapRegistrationForm, ReviewForm
+from django.urls import is_valid_path
+from .forms import BlogForm, BootstrapRegistrationForm, ReviewForm
 from django.db import models
 from .models import Blog
 from .models import Comment
@@ -163,7 +164,33 @@ def blogpost(request, parametr):
             'form': form,
         }
     )
+def newpost(request):
+    assert isinstance(request, HttpRequest)
 
+    if request.method == "POST":
+        blogform = BlogForm(request.POST, request.FILES)
+        if blogform.is_valid():
+            blog_f = blogform.save(commit=False)
+            blog_f.posted = datetime.now()
+            blog_f.author = request.use
+            blog_f.save()
+
+            return redirect('blog')
+    else:
+        blogform = BlogForm()
+
+
+    return render(
+        request,
+        'app/newpost.html',
+            {
+                'blogform': blogform,
+                'title': 'Добавить статью блога',
+
+                'year': datetime.now().year,
+            }
+        )
+ 
 
 
 

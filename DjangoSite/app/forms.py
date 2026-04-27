@@ -3,6 +3,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from .models import Comment
+from .models import Blog
+
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
@@ -87,3 +89,21 @@ class CommentForm(forms.ModelForm):
             }),
         }
 
+
+class BlogForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = ('title', 'description', 'content', 'image',)
+        labels = {
+            'title': "Заголовок", 
+            'description': "Краткое содержание",
+            'content': "Полное содержание", 
+            'image': "Картинка"
+        }
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
+        }

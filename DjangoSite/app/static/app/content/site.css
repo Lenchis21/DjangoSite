@@ -51,6 +51,14 @@ input[type="checkbox"].input-validation-error {
 .img{
     width: 75px;
 }
+.img-slider{
+    max-width: 1000px;
+}
+.img-blog{
+    width: 700px;
+    display:block;
+    margin: 0 auto;
+}
 
 
  /*
@@ -117,4 +125,5 @@ ul {
     align-items: center;
     justify-content: space-between;
 }
+
 
