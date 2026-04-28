@@ -87,7 +87,7 @@ input[type="checkbox"].input-validation-error {
 
 a.subtitle {
     text-decoration: none;
-    font-weight: 800;
+    font-weight: 800
 }
 
 .button {
@@ -95,35 +95,44 @@ a.subtitle {
     background-color: #196fc6;
     padding: 10px 25px;
     color: white;
-    border-radius: 10px;
+    border-radius: 10px
 }
 
 .description {
     font-weight: 300;
     font-size: 17px;
-    text-align: justify-all;
+    text-align: justify-all
 }
 
 .picture {
     width: 400px;
     display: block;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto
 }
 
 ul {
     list-style: none;
-    padding-left: 0;
+    padding-left: 0
 }
 
     ul ul {
-        padding-left: 20px;
+        padding-left: 20px
     }
 
 .menu {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
-
+.videoblog{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items: center
+}
+video {
+    min-width :700px;
+    height:500px
+}

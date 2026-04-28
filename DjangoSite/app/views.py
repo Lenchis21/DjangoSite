@@ -190,7 +190,16 @@ def newpost(request):
                 'year': datetime.now().year,
             }
         )
- 
+def videopost(request):
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/videopost.html',
+        {
+            'title':'Видео',
+              
+        })
 
+     
 
 

@@ -23,6 +23,8 @@ urlpatterns = [
     path('registration/', views.registration, name='registration'),
     path('blogpost/<int:parametr>/', views.blogpost, name='blogpost'),
     path('newpost', views.newpost, name = 'newpost'),
+    path('videopost', views.videopost, name = 'videopost'),
+
     path('login/',
          LoginView.as_view
          (
