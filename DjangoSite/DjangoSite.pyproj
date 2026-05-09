@@ -57,7 +57,11 @@
     <Folder Include="DjangoSite\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\static\app\content\АвтоматизацияЗвукаР.jpg" />
+    <Content Include="app\static\app\content\Физкультминутка.jpg" />
     <Content Include="media\1.jpeg" />
+    <Content Include="media\Letters.mp4" />
+    <Content Include="media\sound_K.mp4" />
     <Content Include="media\video1.mp4" />
     <Content Include="media\video2.mp4" />
     <Content Include="app\static\app\content\1.jpeg" />

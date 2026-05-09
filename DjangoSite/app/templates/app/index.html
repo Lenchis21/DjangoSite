@@ -3,7 +3,8 @@
 
 {% block content %}
 <body>
-    <div class="title">Главная страница</div>
+    <h2 class="title">{{ title }}</h2>
+
     <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="2000">
 
         <ol class="carousel-indicators">
@@ -22,11 +23,11 @@
 
             <div class="item active">
 
-                <img class ="img-slider" src="{% static 'app/content/4.png'%} " alt="Первый слайд" class="img-responsive" />
+                <img class="img-slider" src="{% static 'app/content/4.png'%} " alt="Первый слайд" class="img-responsive" />
 
                 <div class="carousel-caption" role="option">
 
-                   
+
 
                 </div>
 
@@ -34,11 +35,11 @@
 
             <div class="item">
 
-                <img class ="img-slider" src="{% static 'app/content/1.jpeg'%}" alt="Второй слайд" class="img-responsive" />
+                <img class="img-slider" src="{% static 'app/content/1.jpeg'%}" alt="Второй слайд" class="img-responsive" />
 
                 <div class="carousel-caption" role="option">
 
-                   
+
 
                 </div>
 
@@ -46,11 +47,11 @@
 
             <div class="item">
 
-                <img  class ="img-slider" src=" {% static 'app/content/2.jpg'%} " alt="Третий слайд" class="img-responsive" />
+                <img class="img-slider" src=" {% static 'app/content/2.jpg'%} " alt="Третий слайд" class="img-responsive" />
 
                 <div class="carousel-caption" role="option">
 
-                   
+
 
                 </div>
 

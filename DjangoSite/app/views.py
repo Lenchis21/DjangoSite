@@ -20,7 +20,7 @@ def home(request):
         request,
         'app/index.html',
         {
-            'title':'Домашняя страница',
+            'title':'Главная страница',
             'year':datetime.now().year,
         }
     )
@@ -172,7 +172,7 @@ def newpost(request):
         if blogform.is_valid():
             blog_f = blogform.save(commit=False)
             blog_f.posted = datetime.now()
-            blog_f.author = request.use
+            blog_f.author = request.user
             blog_f.save()
 
             return redirect('blog')

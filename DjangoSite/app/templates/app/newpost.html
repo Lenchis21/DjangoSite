@@ -2,7 +2,9 @@
 {% load static %}
 {% block content %}
 
-<h3 class="title">Добавить статью</h3>
+
+<h2 class="title">{{ title }}</h2>
+
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div>
