@@ -32,11 +32,11 @@ class ReviewForm(forms.Form):
     rating = forms.ChoiceField(
         label='Оцените нашу работу', 
         choices=[(5, 'Отлично'), (4, 'Хорошо'), (3, 'Удовлетворительно'), (2, 'Плохо')], 
-        widget=forms.RadioSelect(attrs={'class': 'form-check-input'})
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input list-unstyled'})
     )
     liked = forms.MultipleChoiceField(
         label='Что вам особенно понравилось?', 
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input list-unstyled'}),
         choices=[
             ('diagnostic', 'Диагностика'),
             ('sound', 'Постановка звуков'),
@@ -46,6 +46,7 @@ class ReviewForm(forms.Form):
             ('other', 'Другое')
         ]
     )
+
     age = forms.ChoiceField(
         label='Возраст ребёнка', 
         choices=[
