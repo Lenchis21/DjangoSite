@@ -1,0 +1,59 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'catalog' %}">Услуги</a></li>
+            <li class="breadcrumb-item active">{{ category.name }}</li>
+        </ol>
+    </nav>
+
+    <h1>{{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+
+    <div class="row">
+        {% for service in services %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        {% if service.image %}
+                        <img src="{{ service.image.url }}" class="card-img" alt="{{ service.name }}">
+                        {% else %}
+                        <img src="{% static 'app/img/default_service.jpg' %}" class="card-img" alt="Услуга">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ service.get_absolute_url }}">{{ service.name }}</a>
+                            </h5>
+                            <p class="card-text">{{ service.short_description }}</p>
+                            <p class="card-text">
+                                {% if service.price %}
+                                <strong>Цена:</strong> {{ service.price }} руб.
+                                {% else %}
+                                <span class="text-success">Бесплатно / Уточняйте</span>
+                                {% endif %}
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    Длительность: {{ service.duration }} |
+                                    Возраст: {{ service.age_group }}
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Услуг в этой категории пока нет</p>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'catalog' %}" class="btn btn-secondary">← Назад к категориям</a>
+</div>
+{% endblock %}

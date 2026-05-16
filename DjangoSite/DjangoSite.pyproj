@@ -59,11 +59,13 @@
   <ItemGroup>
     <Content Include="app\static\app\content\АвтоматизацияЗвукаР.jpg" />
     <Content Include="app\static\app\content\Физкультминутка.jpg" />
+    <Content Include="app\templates\app\add_category.html" />
+    <Content Include="app\templates\app\add_service.html" />
+    <Content Include="app\templates\app\catalog.html" />
+    <Content Include="app\templates\app\category_services.html" />
+    <Content Include="app\templates\app\service_detail.html" />
     <Content Include="media\1.jpeg" />
     <Content Include="media\Letters.mp4" />
-    <Content Include="media\sound_K.mp4" />
-    <Content Include="media\video1.mp4" />
-    <Content Include="media\video2.mp4" />
     <Content Include="app\static\app\content\1.jpeg" />
     <Content Include="app\static\app\content\2.jpg" />
     <Content Include="app\static\app\content\3.jpeg" />
@@ -78,6 +80,7 @@
     <Content Include="app\templates\app\pool.html" />
     <Content Include="app\templates\app\registration.html" />
     <Content Include="app\templates\app\videopost.html" />
+    <Content Include="media\newVideo2.mp4" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

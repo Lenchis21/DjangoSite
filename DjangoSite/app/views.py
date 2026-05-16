@@ -3,16 +3,11 @@ Definition of views.
 """
 
 from datetime import datetime
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpRequest
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import is_valid_path
-from .forms import BlogForm, BootstrapRegistrationForm, ReviewForm
-from django.db import models
-from .models import Blog
-from .models import Comment
-from .forms import CommentForm
+from django.contrib.auth.decorators import user_passes_test
+from .forms import BlogForm, BootstrapRegistrationForm, ReviewForm, CommentForm, ServiceForm, ServicesCategoryForm
+from .models import Blog, ServiceCategory, Comment, Service
 
 def home(request):
     assert isinstance(request, HttpRequest)
@@ -197,9 +192,45 @@ def videopost(request):
         'app/videopost.html',
         {
             'title':'Видео',
-              
         })
 
-     
+def catalog(request):
+    """Страница каталога услуг"""
+    categories = ServiceCategory.objects.all()
+    return render(request, 'app/catalog.html', {'categories': categories})
+
+def category_services(request, category_id):
+    """Список услуг в выбранной категории"""
+    category = get_object_or_404(ServiceCategory, id=category_id)
+    services = Service.objects.filter(category=category)
+    return render(request, 'app/category_services.html', {
+            'category':category,
+            'services':services
+        })
+def service_detail(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
+    return render(request, 'app/service_detail.html', {'service': service})
 
 
+@user_passes_test(lambda u: u.is_superuser)
+def add_category(request):
+    if request.method == 'POST':
+        form = ServicesCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('catalog')
+    else:
+        form = ServicesCategoryForm()
+    return render(request, 'app/add_category.html', {'form': form, 'title': 'Добавить категорию'})
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def add_service(request):
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('catalog')
+    else:
+        form = ServiceForm()
+    return render(request, 'app/add_service.html', {'form': form, 'title': 'Добавить услугу'})

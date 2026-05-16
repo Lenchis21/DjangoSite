@@ -1,41 +1,46 @@
 ﻿from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm  
-from django.utils.translation import ugettext_lazy as _
-from django.db import models
-from .models import Comment
-from .models import Blog
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.utils.translation import gettext_lazy as _
+from .models import Comment, Blog, Service, ServiceCategory
 
 
 class BootstrapAuthenticationForm(AuthenticationForm):
-    """Authentication form which uses boostrap CSS."""
-    username = forms.CharField(max_length=254,
-                               widget=forms.TextInput({
-                                   'class': 'form-control',
-                                   'placeholder': 'Имя'}))
-    password = forms.CharField(label=_("Password"),
-                               widget=forms.PasswordInput({
-                                   'class': 'form-control',
-                                   'placeholder':'Пароль'}))
+    """Authentication form which uses bootstrap CSS."""
+    username = forms.CharField(
+        max_length=254,
+        widget=forms.TextInput({
+            'class': 'form-control',
+            'placeholder': 'Имя'
+        })
+    )
+    password = forms.CharField(
+        label=_("Password"),
+        widget=forms.PasswordInput({
+            'class': 'form-control',
+            'placeholder': 'Пароль'
+        })
+    )
+
 
 class ReviewForm(forms.Form):
     name = forms.CharField(
-        label='Ваше имя', 
-        min_length=2, 
+        label='Ваше имя',
+        min_length=2,
         max_length=100,
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите имя'})
     )
     email = forms.EmailField(
-        label='Email', 
+        label='Email',
         min_length=7,
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@example.com'})
     )
     rating = forms.ChoiceField(
-        label='Оцените нашу работу', 
-        choices=[(5, 'Отлично'), (4, 'Хорошо'), (3, 'Удовлетворительно'), (2, 'Плохо')], 
+        label='Оцените нашу работу',
+        choices=[(5, 'Отлично'), (4, 'Хорошо'), (3, 'Удовлетворительно'), (2, 'Плохо')],
         widget=forms.RadioSelect(attrs={'class': 'form-check-input list-unstyled'})
     )
     liked = forms.MultipleChoiceField(
-        label='Что вам особенно понравилось?', 
+        label='Что вам особенно понравилось?',
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input list-unstyled'}),
         choices=[
             ('diagnostic', 'Диагностика'),
@@ -46,9 +51,8 @@ class ReviewForm(forms.Form):
             ('other', 'Другое')
         ]
     )
-
     age = forms.ChoiceField(
-        label='Возраст ребёнка', 
+        label='Возраст ребёнка',
         choices=[
             ('3-4', '3-4 года'),
             ('4-5', '4-5 лет'),
@@ -59,52 +63,76 @@ class ReviewForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-select'})
     )
     message = forms.CharField(
-        label='Комментарий', 
+        label='Комментарий',
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Ваш отзыв...'})
     )
     consent = forms.BooleanField(
-        label='Согласие на обработку персональных данных', 
+        label='Согласие на обработку персональных данных',
         required=True,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
 
 
 class BootstrapRegistrationForm(UserCreationForm):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            for field in self.fields.values():
-                field.widget.attrs.update({'class': 'form-control'})
-                field.help_text = ''
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
+            field.help_text = ''
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('text',)  # Здесь только список полей в кортеже или списке
+        fields = ('text',)
         labels = {'text': 'Комментарий'}
-        
-        # Настройки внешнего вида (виджеты)
         widgets = {
-            'text': forms.Textarea(attrs={
-                'class': 'form-control'
-            }),
+            'text': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Напишите комментарий...'}),
         }
 
 
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = ('title', 'description', 'content', 'image',)
+        fields = ('title', 'description', 'content', 'image')
         labels = {
-            'title': "Заголовок", 
+            'title': "Заголовок",
             'description': "Краткое содержание",
-            'content': "Полное содержание", 
+            'content': "Полное содержание",
             'image': "Картинка"
         }
-
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'content': forms.Textarea(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 8}),
             'image': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+
+
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = [
+            'name', 'category', 'short_description', 'description',
+            'price', 'image', 'duration', 'age_group'
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'short_description': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'rows': 5, 'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'duration': forms.TextInput(attrs={'class': 'form-control'}),
+            'age_group': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+
+
+class ServicesCategoryForm(forms.ModelForm):
+    class Meta:
+        model = ServiceCategory
+        fields = ['name', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
         }

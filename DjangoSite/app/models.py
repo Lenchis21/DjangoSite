@@ -1,5 +1,7 @@
 ﻿from pyexpat import model
 from tabnanny import verbose
+from turtle import mode
+from unicodedata import category
 from django.db import models
 from django.contrib import admin
 from datetime import datetime
@@ -29,27 +31,6 @@ AGE_CHOICES = [
     ('6-7', '6-7 лет'),
     ('7+', 'Старше 7 лет'),
     ]
-
-"""
-class Review(models.Model):
-    name = models.CharField(
-        max_length=100, verbose_name='Имя'
-    )
-    email = models.EmailField( 
-        verbose_name='Email' 
-    )
-    comment = models.TextField(
-        verbose_name='Отзыв'
-    ) 
-    rating = models.IntegerField(choices=RATING_CHOICES, verbose_name ='Оценка работы')
-    liked = models.CharField(max_length = 200, blank = True, choices = LIKED_CHOICES, verbose_name= 'Что понравилось') 
-    
-    consent = models.BooleanField(
-        default=False,
-        verbose_name='Согласие на обработку'
-    )
-    age = models.CharField(max_length = 50, blank = True, choices = AGE_CHOICES, verbose_name = 'Возраст ребёнка')
-"""
 
 class Blog(models.Model):
     title = models.CharField(max_length=100, unique_for_date = "posted", verbose_name="Заголовок")
@@ -82,5 +63,51 @@ class Comment(models.Model):
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
 
+
+class ServiceCategory(models.Model):
+    """Категория услуг логопеда """
+    name = models.CharField("Название категории",max_length=100)
+    description = models.TextField(verbose_name ="Описание", blank=True)
+
+    class Meta:
+        verbose_name = "Категория услуги"
+        verbose_name_plural = "Категории услуг"
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('category_services', args=[str(self.id)]) 
+
+class Service(models.Model):
+    """Услуги логопеда"""
+    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, 
+                                 verbose_name="Категория", 
+                                 related_name='services')
+    name = models.CharField("Название услуги", max_length=100)
+    short_description = models.TextField("Краткое описание")
+    description = models.TextField("Полное описание")
+    price = models.DecimalField(verbose_name="Цена", 
+                                max_digits=10,
+                                decimal_places=2,
+                                blank=True, 
+                                help_text="Можно оставить пустым, если услуга бесплатная",
+                                null=True)
+    image = models.FileField(verbose_name = "Путь к картинке", blank=True)
+    duration = models.CharField("Длительность", max_length=100, blank=True)
+    age_group = models.CharField("Возрастная группа", max_length=100, blank = True)
+
+    class Meta:
+        verbose_name = "Услуга"
+        verbose_name_plural = "Услуги"
+        ordering = ['category','name']
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('service_detail', args=[str(self.id)])
+
+admin.site.register(ServiceCategory)
+admin.site.register(Service)
 admin.site.register(Blog)
 admin.site.register(Comment)
