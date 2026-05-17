@@ -197,7 +197,10 @@ def videopost(request):
 def catalog(request):
     """Страница каталога услуг"""
     categories = ServiceCategory.objects.all()
-    return render(request, 'app/catalog.html', {'categories': categories})
+    return render(request, 'app/catalog.html', {
+        'categories': categories,
+        'title': 'Каталог услуг'
+    })
 
 def category_services(request, category_id):
     """Список услуг в выбранной категории"""

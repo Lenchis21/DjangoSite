@@ -26,8 +26,9 @@ urlpatterns = [
     path('videopost', views.videopost, name = 'videopost'),
     path('catalog', views.catalog, name='catalog'),
     path('category/<int:category_id>/', views.category_services, name='category_services'),
-    path('add-category/', views.add_category, name='add_category'),
     path('service/<int:service_id>/', views.service_detail, name='service_detail'), 
+
+    path('add-category/', views.add_category, name='add_category'),
     path('add-service/', views.add_service, name='add_service'),
     path('login/',
          LoginView.as_view

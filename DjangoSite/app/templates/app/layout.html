@@ -8,40 +8,54 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
-    
     <link rel="icon" type="image/x-icon" href="{% static 'app/content/favicon.ico' %}?v=1">
 </head>
 
 <body>
-    <div class="navbar  navbar-fixed-top">
+    <div class="navbar navbar-fixed-top">
         <div class="container menu content-wrapper">
-
-            <a href="/" class="navbar-brand"> <img class="img" src="{% static 'app/content/Логотип.png' %}" alt="logo" /> </a>
+            <a href="/" class="navbar-brand">
+                <img class="img" src="{% static 'app/content/Логотип.png' %}" alt="logo" />
+            </a>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav ">
-                    <li><a href="{% url 'blog' %}">Блог</a></li>
+                <ul class="nav navbar-nav">
                     <li><a href="{% url 'home' %}">Главная</a></li>
-                    <li><a href="{% url 'contact' %}">Контакты</a></li>
+                    <li><a href="{% url 'catalog' %}">Услуги</a></li>
 
-                    <li><a href="{% url 'about' %}">О нас</a></li>
-                    <li><a href="{% url 'link' %}">Полезные ссылки</a></li>
-                    <li><a href="{% url 'pool' %}">Обратная связь</a></li>
-                    <li><a href="{% url 'catalog' %}">>Услуги</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Информация <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'about' %}">О нас</a></li>
+                            <li><a href="{% url 'blog' %}">Блог</a></li>
+                            <li><a href="{% url 'videopost' %}">Видео</a></li>
+                            <li><a href="{% url 'link' %}">Полезные ссылки</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Контакты <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'contact' %}">Контакты</a></li>
+                            <li><a href="{% url 'pool' %}">Обратная связь</a></li>
+                        </ul>
+                    </li>
 
                     {% if user.is_superuser %}
-                    <li><a href="{% url 'newpost' %}">Добавить статью</a></li>
-                    <li><a href="{% url 'add_category' %}">Добавить категорию</a></li>
-                    <li><a href="{% url 'add_service' %}">Добавить услугу</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Управление <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'newpost' %}">Добавить статью</a></li>
+                            <li><a href="{% url 'add_category' %}">Добавить категорию</a></li>
+                            <li><a href="{% url 'add_service' %}">Добавить услугу</a></li>
+                        </ul>
+                    </li>
                     {% endif %}
-
-                    <li><a href="{% url 'videopost' %}">Видео</a></li>
 
                     {% if not user.is_authenticated %}
                     <li><a href="{% url 'registration' %}">Регистрация</a></li>
                     {% endif %}
                 </ul>
                 {% include 'app/loginpartial.html' %}
-
             </div>
         </div>
     </div>
@@ -49,6 +63,7 @@
     <div class="container body content-wrapper">
         {% block content %}{% endblock %}
     </div>
+
     <footer class="footer-container">
         <div class="container">
             <p class="description">&copy; {% now "Y" %} Nikolaev Aleksandr. Все права защищены.</p>
@@ -59,6 +74,5 @@
     <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
     <script src="{% static 'app/scripts/respond.js' %}"></script>
     {% block scripts %}{% endblock %}
-
 </body>
 </html>

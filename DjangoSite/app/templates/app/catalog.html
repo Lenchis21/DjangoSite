@@ -5,26 +5,20 @@
 <h2 class="title">{{ title }}</h2>
 
 <div class="container">
-
-    <div class="container">
-        <h1>Услуги логопеда</h1>
-        <p class="lead">Выберите категорию услуг</p>
-
-        <div class="row">
-            {% for category in categories %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ category.name }}</h5>
-                        <p class="card-text">{{ category.description|truncatewords:20 }}</p>
-                        <a href="{{ category.get_absolute_url }}" class="btn btn-primary">Смотреть услуги</a>
-                    </div>
+    <div class="row">
+        {% for category in categories %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ category.name }}</h5>
+                    <p class="card-text">{{ category.description|truncatewords:20 }}</p>
+                    <a href="{{ category.get_absolute_url }}" class="btn btn-primary">Смотреть услуги</a>
                 </div>
             </div>
-            {% empty %}
-            <p>Категории пока не добавлены</p>
-            {% endfor %}
         </div>
+        {% empty %}
+        <p>Категории пока не добавлены</p>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
