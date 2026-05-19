@@ -3,15 +3,9 @@
 
 {% block content %}
 <div class="container">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'catalog' %}">Услуги</a></li>
-            <li class="breadcrumb-item active">{{ category.name }}</li>
-        </ol>
-    </nav>
-
-    <h1>{{ category.name }}</h1>
-    <p>{{ category.description }}</p>
+  
+    <h1 class="title">{{ category.name }}</h1>
+    <p class="description">{{ category.description }}</p>
 
     <div class="row">
         {% for service in services %}
@@ -27,11 +21,11 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <a href="{{ service.get_absolute_url }}">{{ service.name }}</a>
-                            </h5>
-                            <p class="card-text">{{ service.short_description }}</p>
-                            <p class="card-text">
+                            <div>
+                                <a class="subtitle" href="{{ service.get_absolute_url }}">{{ service.name }}</a>
+                            </div>
+                            <p class="description">{{ service.short_description }}</p>
+                            <p class="description">
                                 {% if service.price %}
                                 <strong>Цена:</strong> {{ service.price }} руб.
                                 {% else %}

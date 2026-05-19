@@ -2,40 +2,33 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+
+
 <div class="container">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'catalog' %}">Услуги</a></li>
-            <li class="breadcrumb-item">
-                <a href="{{ service.category.get_absolute_url }}">{{ service.category.name }}</a>
-            </li>
-            <li class="breadcrumb-item active">{{ service.name }}</li>
-        </ol>
-    </nav>
+    <div class="title">{{ service.name }}</div>
 
     <div class="row">
         <div class="col-md-5">
             {% if service.image %}
-            <img src="{{ service.image.url }}" class="img-fluid rounded" alt="{{ service.name }}">
+            <img src="{{ service.image.url }}" alt="{{ service.name }}">
             {% else %}
             <div class="bg-light text-center p-5 rounded">
                 <p class="text-muted">Нет изображения</p>
             </div>
             {% endif %}
         </div>
-
         <div class="col-md-7">
-            <h1>{{ service.name }}</h1>
-            <p class="lead">{{ service.short_description }}</p>
+            <p class="lead subtitle">{{ service.short_description }}</p>
 
             <table class="table table-bordered">
                 <tr>
-                    <th>Категория</th>
-                    <td>{{ service.category.name }}</td>
+                    <th description>Категория</th>
+                    <td description>{{ service.category.name }}</td>
                 </tr>
                 <tr>
-                    <th>Цена</th>
-                    <td>
+                    <th description>Цена</th>
+                    <td description>
                         {% if service.price %}
                         {{ service.price }} руб.
                         {% else %}
@@ -44,12 +37,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Длительность</th>
-                    <td>{{ service.duration }}</td>
+                    <th description>Длительность</th>
+                    <td description>{{ service.duration }}</td>
                 </tr>
                 <tr>
-                    <th>Возрастная группа</th>
-                    <td>{{ service.age_group }}</td>
+                    <th description>Возрастная группа</th>
+                    <td description>{{ service.age_group }}</td>
                 </tr>
             </table>
         </div>
@@ -57,9 +50,9 @@
 
     <div class="row mt-4">
         <div class="col-12">
-            <h3>Полное описание</h3>
+            <!--<h3>Полное описание</h3>-->
             <div class="card">
-                <div class="card-body">
+                <div class="card-body description">
                     {{ service.description|linebreaks }}
                 </div>
             </div>
