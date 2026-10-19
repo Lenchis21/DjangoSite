@@ -5,16 +5,14 @@
 <h1 class="title">Корзина</h1>
 
 {% if items %}
-<!-- Оборачиваем таблицу в форму для отправки в конце -->
 <form method="POST" action="{% url 'cart_checkout' %}">
     {% csrf_token %}
-
     <table class="table table-bordered description mt-4">
         <thead>
             <tr>
                 <th>Услуга</th>
                 <th>Цена</th>
-                <th class="text-center">Количество</th>
+                <th class="text-center" style="width: 120px;">Количество</th>
                 <th>Сумма</th>
                 <th></th>
             </tr>
@@ -25,20 +23,12 @@
                 <td><a href="{% url 'service_detail' item.service.id %}">{{ item.service.name }}</a></td>
                 <td>{{ item.service.price|default:"0" }}</td>
 
+                <!-- Здесь просто выводим количество текстом -->
                 <td class="text-center">
-                    <!-- Передаем ID и цену в data-атрибуты для JS -->
-                    <div class="quantity" data-id="{{ item.id }}" data-price="{{ item.service.price|default:0 }}">
-                        <button type="button" class="quantity__btn quantity__btn--minus {% if item.quantity == 1 %}min{% endif %}">−</button>
-
-                        <!-- ВАЖНО: name="quantity_ID" и id="qty_ID" -->
-                        <input type="text" name="quantity_{{ item.id }}" id="qty-{{ item.id }}" class="quantity__input" value="{{ item.quantity }}" readonly>
-
-                        <button type="button" class="quantity__btn quantity__btn--plus">+</button>
-                    </div>
+                    {{ item.quantity }}
                 </td>
 
-                <!-- ID для обновления суммы в строке -->
-                <td id="subtotal-{{ item.id }}">{{ item.subtotal }}</td>
+                <td>{{ item.subtotal }}</td>
                 <td><a href="{% url 'cart_remove' item.id %}" style="color: #d9534f;">Удалить</a></td>
             </tr>
             {% endfor %}
@@ -46,24 +36,15 @@
     </table>
 
     <div class="mt-4 text-right">
-        <!-- ID для обновления общего итога -->
-        <h3 class="description">Итого: <b id="cart-total" style="color: #d17b4c; font-size: 24px;">{{ total }}</b> руб.</h3>
+        <h3 class="description">Итого: <b style="color: #d17b4c; font-size: 24px;">{{ total }}</b> руб.</h3>
     </div>
 
     <div class="text-right mt-3">
-        <a href="{% url 'catalog' %}" class="btn-base btn-blue">Добавить еще</a>
-
-        <!-- Кнопка отправляет форму со всеми новыми количествами -->
-        <button type="submit" class="btn-base btn-green">Оформить заказ</button>
+        <a href="{% url 'catalog' %}" class="btn-base btn-green">Добавить</a>
+        <button type="submit" class="btn-base btn-red">Оформить</button>
     </div>
 </form>
-
 {% else %}
 <p class="description">Корзина пуста.</p>
 {% endif %}
-
-{% endblock %}
-
-{% block scripts %}
-<script src="{% static 'app/scripts/cart.js' %}"></script>
 {% endblock %}

@@ -212,6 +212,7 @@ def category_services(request, category_id):
             'category':category,
             'services':services
         })
+
 def service_detail(request, service_id):
     service = get_object_or_404(Service, id=service_id)
     return render(request, 'app/services/service_detail.html', {'service': service})
@@ -243,6 +244,8 @@ def add_service(request):
 
 # --- Корзина ----
 
+
+@login_required
 def get_cart(request):
     """Возвращает текущую корзину пользователя, создавая её при необходимости."""
     cart, created = Order.objects.get_or_create(
@@ -250,24 +253,23 @@ def get_cart(request):
     )
     return cart
 
+
 @login_required
-def cart_add(request, service_id):
-    """Добавление услуги в корзину (сразу по 1 шт.)"""
-    service = get_object_or_404(Service, id=service_id)
+def cart_checkout(request):
+    raise Exception("СТОП! ФОРМА ДОШЛА ДО СЕРВЕРА!") # <--- ДОБАВЬТЕ ЭТУ СТРОКУ
+    
     cart = get_cart(request)
-    
-    # Ищем, есть ли уже эта услуга в корзине
-    item, created = OrderItem.objects.get_or_create(
-        order=cart, service=service,
-        defaults={'quantity': 1}
-    )
-    
-    # Если услуга уже была, просто прибавляем 1
-    if not created:
-        item.quantity += 1
-        item.save()
+
+    if request.method == "POST":
+        # Выведем в консоль ВСЁ, что пришло
+        print("=== ПРИШЕЛ POST ЗАПРОС ===")
+        print(request.POST)
         
-    return redirect('cart_view')
+        # Временно прервем выполнение и покажем данные на экране
+        return HttpResponse(f"<h1>Данные, которые пришли:</h1><p>{request.POST}</p>")
+    
+    # Если это GET-запрос (просто открыли страницу)
+    return HttpResponse("<h1>Это GET-запрос. Оформите заказ через корзину.</h1>")
 
 @login_required
 def cart_view(request):
@@ -279,18 +281,76 @@ def cart_view(request):
         'year': datetime.now().year,
     })
 
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
+@login_required
+@require_POST
+def cart_ajax_update(request, item_id):
+    """Обновление количества через JS (без перезагрузки)."""
+    item = get_object_or_404(OrderItem, id=item_id, order__customer=request.user)
+    action = request.POST.get('action')
+
+    if action == 'plus':
+        item.quantity += 1
+        item.save()
+    elif action == 'minus':
+        if item.quantity > 1:
+            item.quantity -= 1
+            item.save()
+        else:
+            item.delete()
+            return JsonResponse({'status': 'deleted', 'total': item.order.total()})
+
+    return JsonResponse({
+        'status': 'ok',
+        'quantity': item.quantity,
+        'subtotal': item.subtotal(),
+        'total': item.order.total()
+    })
+
+
+@login_required
+def cart_add(request, service_id):
+    """Добавление услуги в корзину (по 1 шт. за клик)."""
+    service = get_object_or_404(Service, id=service_id)
+    cart = get_cart(request)
+    
+    # Ищем товар в корзине (если нет — создаем с количеством 1)
+    item, created = OrderItem.objects.get_or_create(
+        order=cart, service=service,
+        defaults={'quantity': 1}
+    )
+    
+    # Если товар уже был, просто прибавляем 1
+    if not created:
+        item.quantity += 1
+        item.save()
+        
+    return redirect('cart_view')
+
 @login_required
 def cart_update(request, item_id):
-    """Изменение количества занятий в корзине."""
+    """Изменение количества занятий в корзине (без JS, через перезагрузку)."""
     item = get_object_or_404(OrderItem, id=item_id, order__customer=request.user)
-    form = QuantityForm(request.POST or None, initial={'quantity': item.quantity})
-    if request.method == "POST" and form.is_valid():
-        item.quantity = form.cleaned_data['quantity']
+    
+    # Получаем действие из URL (?action=plus или ?action=minus)
+    action = request.GET.get('action')
+
+    if action == 'plus':
+        item.quantity += 1
         item.save()
-        return redirect('cart_view')
-    return render(request, 'app/cart/cart_update.html', {
-        'form': form, 'item': item, 'year': datetime.now().year,
-    })
+    elif action == 'minus':
+        if item.quantity > 1:
+            item.quantity -= 1
+            item.save()
+        else:
+            # Если нажали минус на 1, удаляем товар
+            item.delete()
+            return redirect('cart_view')
+
+    # Возвращаем пользователя обратно в корзину
+    return redirect('cart_view')
 
 @login_required
 def cart_update_all(request):

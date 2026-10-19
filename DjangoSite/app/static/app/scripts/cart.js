@@ -1,46 +1,58 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.quantity').forEach(counter => {
-        const input = counter.querySelector('.quantity__input');
-        const minus = counter.querySelector('.quantity__btn--minus');
-        const plus = counter.querySelector('.quantity__btn--plus');
+    // Получаем токен CSRF (нужен для Django)
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
 
-        const itemId = counter.dataset.id;
-        const price = parseFloat(counter.dataset.price) || 0;
+    if (!csrfToken) {
+        console.error('CSRF token не найден!');
+    }
 
-        function recalculate() {
-            let qty = parseInt(input.value);
-            let rowSubtotal = qty * price;
+    function updateCart(itemId, action) {
+        console.log(`Отправка запроса: ID=${itemId}, action=${action}`); // Для отладки
 
-            // 1. Обновляем сумму в строке
-            const subtotalEl = document.getElementById(`subtotal-${itemId}`);
-            if (subtotalEl) subtotalEl.innerText = rowSubtotal.toFixed(2);
+        const formData = new FormData();
+        formData.append('action', action);
+        formData.append('csrfmiddlewaretoken', csrfToken);
 
-            // 2. Пересчитываем общий итог
-            let total = 0;
-            document.querySelectorAll('.quantity').forEach(c => {
-                const q = parseInt(c.querySelector('.quantity__input').value);
-                const p = parseFloat(c.dataset.price) || 0;
-                total += q * p;
+        fetch(`/cart/ajax/update/${itemId}/`, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Ошибка сервера: ' + response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Ответ сервера:', data); // Для отладки
+
+                if (data.status === 'deleted') {
+                    location.reload();
+                } else {
+                    document.getElementById(`qty-${itemId}`).innerText = data.quantity;
+                    document.getElementById(`subtotal-${itemId}`).innerText = data.subtotal;
+                    document.getElementById('cart-total').innerText = data.total;
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
             });
+    }
 
-            const totalEl = document.getElementById('cart-total');
-            if (totalEl) totalEl.innerText = total.toFixed(2);
-        }
+    // Находим все кнопки и вешаем на них события
+    const btnPlusList = document.querySelectorAll('.btn-plus');
+    const btnMinusList = document.querySelectorAll('.btn-minus');
 
-        plus.addEventListener('click', () => {
-            let value = parseInt(input.value);
-            input.value = ++value;
-            minus.classList.remove('min');
-            recalculate(); // Пересчитываем визуально
+    console.log(`Найдено кнопок ПЛЮС: ${btnPlusList.length}`);
+    console.log(`Найдено кнопок МИНУС: ${btnMinusList.length}`);
+
+    btnPlusList.forEach(btn => {
+        btn.addEventListener('click', function () {
+            updateCart(this.dataset.id, 'plus');
         });
+    });
 
-        minus.addEventListener('click', () => {
-            let value = parseInt(input.value);
-            if (value > 1) {
-                input.value = --value;
-                if (value === 1) minus.classList.add('min');
-                recalculate(); // Пересчитываем визуально
-            }
+    btnMinusList.forEach(btn => {
+        btn.addEventListener('click', function () {
+            updateCart(this.dataset.id, 'minus');
         });
     });
 });

@@ -67,7 +67,6 @@
     <Content Include="app\templates\app\services\add_category.html" />
     <Content Include="app\templates\app\services\add_service.html" />
     <Content Include="app\templates\app\cart\cart.html" />
-    <Content Include="app\templates\app\cart\cart_add.html" />
     <Content Include="app\templates\app\cart\cart_update.html" />
     <Content Include="app\templates\app\cart\checkout.html" />
     <Content Include="app\templates\app\cart\my_orders.html" />
