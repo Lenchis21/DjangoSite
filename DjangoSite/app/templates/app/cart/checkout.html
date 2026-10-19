@@ -1,0 +1,15 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<h1 class="title">Оформление заказа</h1>
+
+<p class="subtitle">Сумма заказа: {{ total }} руб.</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <p>
+        <label for="comment" class="description">Комментарий к заказу:</label><br />
+        <textarea name="comment" id="comment" rows="4" cols="60"></textarea>
+    </p>
+    <button type="btn-base btn-brand" class="btn">Подтвердить заказ</button>
+</form>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<h2 class="title">{{ post_1.title }}</h2>
+
+{% if post_1.image and post_1.image.url != '/media/temp.jpg' %}
+<img class="img-blog" src="{{ post_1.image.url }}" alt="Картинка статьи блога" />
+{% endif %}
+
+{% autoescape off %}
+<p> {{ post_1.content|linebreaksbr }} </p>
+{% endautoescape %}
+
+<a class="btn-base btn-brand mb-4" href="{% url 'blog' %}">← Назад к блогу</a>
+
+<hr>
+
+{% if user.is_authenticated %}
+<h3 class="subtitle mt-4">Добавить комментарий</h3>
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        {{ form.as_p }}
+
+        <!-- Блок с кнопкой, выровненной вправо -->
+        <div class="text-right mt-3">
+            <button type="submit" class="btn-base btn-green">
+                Отправить комментарий
+            </button>
+        </div>
+    </div>
+</form>
+{% else %}
+<h4 class="material-note mt-4">
+    Для добавления своего комментария, пожалуйста, <a href="{% url 'login' %}">авторизуйтесь</a>.
+</h4>
+{% endif %}
+
+<hr>
+
+<h3 class="subtitle mt-4">Комментарии:</h3>
+{% for comment in comments %}
+<div class="mb-3">
+    <h5 class="description">
+        <b>{{ comment.author }}</b>
+        <span class="text-muted" style="font-size: 14px;">({{ comment.create_at }})</span>
+    </h5>
+    <p class="description">{{ comment.text|linebreaks }}</p>
+</div>
+<hr>
+{% empty %}
+<p class="description">Комментариев пока нет. Будьте первым!</p>
+{% endfor %}
+
+{% endblock %}

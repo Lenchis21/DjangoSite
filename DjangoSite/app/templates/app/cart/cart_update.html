@@ -1,0 +1,10 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<h1 class="title">Изменить количество: {{ item.service.name }}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn-base btn-brand">Сохранить</button>
+</form>
+{% endblock %}

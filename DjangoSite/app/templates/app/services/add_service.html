@@ -1,0 +1,15 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<h2 class="title">{{ title }}</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="text-right form-actions">
+        <button type="submit" class="btn-base btn-green">Добавить</button>
+        <a href="{% url 'catalog' %}" class="btn-base btn-red">Отмена</a>
+    </div>
+</form>
+
+{% endblock %}

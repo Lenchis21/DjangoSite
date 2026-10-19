@@ -1,0 +1,19 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<h2 class="title">{{ title }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <!-- Поля формы -->
+    {{ form.as_p }}
+
+    <!-- Кнопки, выровненные по правому краю -->
+    <div class="text-right mt-3">
+        <button type="submit" class="btn-base btn-green">Добавить</button>
+        <a href="{% url 'catalog' %}" class="btn-base btn-red">Отмена</a>
+    </div>
+</form>
+
+{% endblock %}

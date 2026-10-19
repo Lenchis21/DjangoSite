@@ -1,0 +1,14 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<h1 class="title">Записаться: {{ service.name }}</h1>
+
+<div class="info-block">
+    <p class="description"><b>Цена:</b> {{ service.price|default:"бесплатно" }} руб.</p>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn-base btn-brand">Добавить в корзину</button>
+</form>
+{% endblock %}

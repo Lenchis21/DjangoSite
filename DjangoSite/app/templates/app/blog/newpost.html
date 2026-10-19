@@ -1,7 +1,8 @@
 {% extends "app/layout.html" %}
 {% load static %}
-{% block content %}
 
+
+{% block content %}
 
 <h2 class="title">{{ title }}</h2>
 
@@ -9,7 +10,7 @@
     {% csrf_token %}
     <div>
         {{blogform.as_p}}
-        <button type="submit" class="save btn btn-default">Сохранить статью</button>
+        <button type="submit" class="btn-base btn-brand">Добавить статью</button>
     </div>
 </form>
 

@@ -1,0 +1,31 @@
+{% extends "app/layout.html" %}
+{% block content %}
+
+<h1 class="title">Управление заказами</h1>
+<p class="description">Здесь вы можете просматривать заказы всех клиентов и отмечать их выполненными.</p>
+
+{% for order in orders %}
+<hr />
+<div class="info-block">
+    <h2 class="subtitle">Заказ №{{ order.id }} от {{ order.date }}</h2>
+    <p class="description">
+        <b>Клиент:</b>
+        {% if order.customer %}{{ order.customer.username }}
+        {% else %}<i>удалённый клиент</i>{% endif %}
+    </p>
+    <p class="description"><b>Статус:</b> {{ order.get_status_display }}</p>
+    <ul class="description">
+        {% for item in order.orderitem_set.all %}
+        <li>{{ item.service.name }} — {{ item.quantity }} шт. = {{ item.subtotal }}</li>
+        {% endfor %}
+    </ul>
+    <p class="description"><b>Итого:</b> {{ order.total }} руб.</p>
+
+    {% if order.status == 'new' %}
+    <a href="{% url 'order_done' order.id %}" class="btn-base btn-green">Отметить выполненным</a>
+    {% endif %}
+</div>
+{% empty %}
+<p class="description">Заказов нет.</p>
+{% endfor %}
+{% endblock %}

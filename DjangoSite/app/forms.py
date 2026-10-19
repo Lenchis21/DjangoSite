@@ -1,7 +1,7 @@
 ﻿from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
-from .models import Comment, Blog, Service, ServiceCategory
+from .models import Comment, Blog, Service, ServiceCategory, Order, OrderItem 
 
 
 class BootstrapAuthenticationForm(AuthenticationForm):
@@ -136,3 +136,9 @@ class ServicesCategoryForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
         }
+
+#Количественная форма
+class QuantityForm(forms.Form):
+    quantity = forms.IntegerField(
+        min_value=1, initial=1, label="Количество занятий"
+    )

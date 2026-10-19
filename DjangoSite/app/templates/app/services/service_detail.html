@@ -1,0 +1,83 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1 class="title mb-4">{{ service.name }}</h1>
+
+<div class="row align-items-start mb-4">
+    <!-- Левая колонка с картинкой -->
+    <div class="col-md-5 mb-3 mb-md-0">
+        {% if service.image %}
+        <img src="{{ service.image.url }}" alt="{{ service.name }}" class="img-fluid rounded shadow-sm">
+        {% else %}
+        <div class="bg-light text-center p-5 rounded text-muted">
+            Нет изображения
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Правая колонка с описанием и таблицей -->
+    <div class="col-md-7">
+        <p class="lead subtitle mb-3">{{ service.short_description }}</p>
+
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th class="description" style="width: 40%;">Категория</th>
+                <td class="description">{{ service.category.name }}</td>
+            </tr>
+            <tr>
+                <th class="description">Цена</th>
+                <td class="description">
+                    {% if service.price %}
+                    <b>{{ service.price }} руб.</b>
+                    {% else %}
+                    <span class="text-success"><b>Бесплатно / Уточняйте</b></span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th class="description">Длительность</th>
+                <td class="description">{{ service.duration }}</td>
+            </tr>
+            <tr>
+                <th class="description">Возрастная группа</th>
+                <td class="description">{{ service.age_group }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Полное описание -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card bg-white border-0 shadow-sm">
+            <div class="card-body description">
+                {{ service.description|linebreaks }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Блок с кнопками по центру -->
+<div class="text-center mb-5 mt-4 pt-3 border-top">
+    <a href="{% url 'catalog' %}" class="btn-base btn-brand" style="margin-right: 10px;">
+        ← К списку категорий
+    </a>
+
+    <a href="{{ service.category.get_absolute_url }}" class="btn-base btn-blue" style="margin-right: 10px;">
+        ← Назад к услугам
+    </a>
+
+    {% if user.is_authenticated %}
+    <a href="{% url 'cart_add' service.id %}" class="btn-base btn-green">
+        Записаться
+    </a>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn-base btn-green">
+        Войти и записаться
+    </a>
+    {% endif %}
+</div>
+
+{% endblock %}

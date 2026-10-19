@@ -230,26 +230,70 @@ video {
 
 
 /* Кнопки  */
-.btn, button[type="submit"], .save {
-    background: #d17b4c;
+/* Фирменные кнопки (не трогают стандартный Bootstrap) */
+.btn-base {
     border: none;
     padding: 10px 24px;
     border-radius: 30px;
-    color: white;
     font-weight: 600;
     font-size: 15px;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
     display: inline-block;
+    text-align: center;
 }
-
-    .btn:hover, button:hover {
+   
+.btn-brand {
+    background: #d17b4c;
+    color: white !important;
+}
+    .btn-brand:hover {
         background: #b8653a;
-        transform: translateY(-1px);
+        color: white !important;
     }
 
+a{
+    text-decoration: none;
+}
+    a:hover {
+        text-decoration: none;
+    }
 
+.btn-green {
+    background: #5cb85c;
+    color: white !important;
+}
+
+    .btn-green:hover {
+        background: #4cae4c;
+        color: white !important;
+    }
+
+.btn-blue {
+    background: #428bca;
+    color: white !important;
+}
+
+    .btn-blue:hover {
+        background: #3071a9;
+        color: white !important;
+    }
+
+.btn-red {
+    background: #d9534f;
+    color: white !important;
+}
+
+    .btn-red:hover {
+        background: #c9302c;
+        color: white !important;
+    }
+
+/* Отступ для первой строки текста (красная строка) */
+.text-indent {
+    text-indent: 30px; /* Размер отступа. Можно поменять на 20px или 40px */
+}
 /* Подвал */
 .footer-container {
     flex-shrink: 0;
@@ -399,4 +443,56 @@ hr {
     text-align: center;
     margin-top: 30px;
     font-weight: 500;
+}
+
+/* Стили для блока количества в корзине */
+.quantity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: Helvetica, sans-serif;
+    justify-content: center;
+}
+
+.quantity__btn {
+    width: 36px;
+    height: 36px;
+    background: #35e201;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .quantity__btn:hover {
+        background: #2cc700;
+        transform: scale(1.05);
+    }
+
+    .quantity__btn.min {
+        background: #989797;
+        cursor: not-allowed;
+    }
+
+        .quantity__btn.min:hover {
+            background: #989797;
+            transform: none;
+        }
+
+.quantity__input {
+    width: 60px;
+    height: 36px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    pointer-events: none; /* Запрещает кликать по инпуту */
 }

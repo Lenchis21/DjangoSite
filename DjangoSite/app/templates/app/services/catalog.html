@@ -1,0 +1,26 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<h2 class="title">{{ title }}</h2>
+
+<div class="row">
+    {% for category in categories %}
+    <div class="col-md-4 mb-4">
+        <div class="card catalog-card">
+            <div class="card-body catalog-card-body">
+                <a href="{{ category.get_absolute_url }}" class="subtitle">{{ category.name }}</a>
+                <div class="description catalog-card-desc">{{ category.description|truncatewords:20 }}</div>
+
+                <div class="text-center">
+                    <a href="{{ category.get_absolute_url }}" class="btn-base btn-brand">Смотреть услуги</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p class="description">Категории пока не добавлены</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

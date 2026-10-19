@@ -33,7 +33,7 @@ urlpatterns = [
     path('login/',
          LoginView.as_view
          (
-             template_name='app/login.html',
+             template_name='app/auth/login.html',
              authentication_form=forms.BootstrapAuthenticationForm,
              extra_context=
              {
@@ -44,6 +44,16 @@ urlpatterns = [
          name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
+
+    path('cart/', views.cart_view, name='cart_view'),
+    path('cart/add/<int:service_id>/', views.cart_add, name='cart_add'),
+    path('cart/update/<int:item_id>/', views.cart_update, name='cart_update'),
+    path('cart/remove/<int:item_id>/', views.cart_remove, name='cart_remove'),
+    path('cart/checkout/', views.cart_checkout, name='cart_checkout'),
+    path('cart/update_all/', views.cart_update_all, name='cart_update_all'),
+    path('myorders/', views.my_orders, name='my_orders'),
+    path('manage/orders/', views.orders_manage, name='orders_manage'),
+    path('manage/orders/<int:order_id>/done/', views.order_done, name='order_done'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

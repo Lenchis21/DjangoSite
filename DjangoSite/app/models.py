@@ -63,7 +63,6 @@ class Comment(models.Model):
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
 
-
 class ServiceCategory(models.Model):
     """Категория услуг логопеда """
     name = models.CharField("Название категории",max_length=100)
@@ -81,18 +80,11 @@ class ServiceCategory(models.Model):
 
 class Service(models.Model):
     """Услуги логопеда"""
-    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, 
-                                 verbose_name="Категория", 
-                                 related_name='services')
+    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, verbose_name="Категория", related_name='services')
     name = models.CharField("Название услуги", max_length=100)
     short_description = models.TextField("Краткое описание")
     description = models.TextField("Полное описание")
-    price = models.DecimalField(verbose_name="Цена", 
-                                max_digits=10,
-                                decimal_places=2,
-                                blank=True, 
-                                help_text="Можно оставить пустым, если услуга бесплатная",
-                                null=True)
+    price = models.DecimalField(verbose_name="Цена", max_digits=10,decimal_places=2,blank=True, help_text="Можно оставить пустым, если услуга бесплатная",null=True)
     image = models.FileField(verbose_name = "Путь к картинке", blank=True)
     duration = models.CharField("Длительность", max_length=100, blank=True)
     age_group = models.CharField("Возрастная группа", max_length=100, blank = True)
@@ -107,7 +99,56 @@ class Service(models.Model):
     def get_absolute_url(self):
         return reverse('service_detail', args=[str(self.id)])
 
+
+#  Добавление заказа и Позиции заказа
+
+class Order(models.Model):
+    STATUS_CHOICES = (
+        ('cart', 'Корзина'),
+        ('new', 'Новый'),
+        ('done', 'Выполнен'),
+    )
+    customer = models.ForeignKey(
+        User, null=True, blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Клиент"
+    )
+    date = models.DateTimeField(default=datetime.now, verbose_name="Дата создания")
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES,
+                              default='cart', verbose_name="Статус")
+    comment = models.TextField(blank=True, verbose_name="Комментарий к заказу")
+
+    def total(self):
+        return sum(item.subtotal() for item in self.orderitem_set.all())
+
+    def __str__(self):
+        return 'Заказ №%s (%s)' % (self.id, self.customer or 'удалённый клиент')
+
+    class Meta:
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
+        ordering = ["-date"]
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name="Заказ")
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name="Услуга")
+    quantity = models.PositiveIntegerField(default=1, verbose_name="Количество")
+
+    def subtotal(self):
+        price = self.service.price or 0
+        return price * self.quantity
+
+    def __str__(self):
+        return '%s x %s' % (self.service, self.quantity)
+
+    class Meta:
+        verbose_name = "Позиция заказа"
+        verbose_name_plural = "Позиции заказа"
+
 admin.site.register(ServiceCategory)
 admin.site.register(Service)
 admin.site.register(Blog)
 admin.site.register(Comment)
+admin.site.register(Order)
+admin.site.register(OrderItem)
