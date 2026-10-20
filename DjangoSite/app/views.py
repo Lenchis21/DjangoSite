@@ -397,8 +397,12 @@ def my_orders(request):
 def orders_manage(request):
     """Управление заказами для менеджера."""
     orders = Order.objects.exclude(status='cart').order_by('-date')
+    services = Service.objects.all()
+   
     return render(request, 'app/cart/orders_manage.html', {
-        'orders': orders, 'year': datetime.now().year,
+        'orders': orders, 
+        'services': services,
+        'year': datetime.now().year,
     })
 
 
@@ -424,3 +428,41 @@ def order_update_status(request, order_id):
             
     return redirect('orders_manage')
 
+@staff_member_required
+@require_POST
+def order_edit_item(request, item_id):
+    """Изменение количества или удаление позиции."""
+    item = get_object_or_404(OrderItem, id=item_id)
+    action = request.POST.get('action')
+    
+    if action == 'plus':
+        item.quantity += 1
+        item.save()
+    elif action == 'minus':
+        if item.quantity > 1:
+            item.quantity -= 1
+            item.save()
+        else:
+            item.delete()
+    elif action == 'delete':
+        item.delete()
+        
+    return redirect('orders_manage') # Возвращаемся на ту же страницу
+
+@staff_member_required
+@require_POST
+def order_add_item(request, order_id):
+    """Добавление новой услуги в заказ."""
+    order = get_object_or_404(Order, id=order_id)
+    service_id = request.POST.get('service_id')
+    
+    if service_id:
+        service = get_object_or_404(Service, id=service_id)
+        item, created = OrderItem.objects.get_or_create(
+            order=order, service=service, defaults={'quantity': 1}
+        )
+        if not created:
+            item.quantity += 1
+            item.save()
+            
+    return redirect('orders_manage')

@@ -1,7 +1,9 @@
 {% extends "app/layout.html" %}
-{% block content %}
+{% load static %}
 
+{% block content %}
 <h1 class="title">Управление заказами</h1>
+<p class="description">Здесь вы можете управлять заказами клиентов: менять статусы, добавлять, изменять или удалять услуги.</p>
 
 {% if orders %}
 <table class="table table-bordered description mt-4">
@@ -10,7 +12,7 @@
             <th style="width: 60px;">№</th>
             <th>Дата</th>
             <th>Клиент</th>
-            <th>Состав заказа</th>
+            <th style="width: 40%;">Состав заказа (редактирование)</th>
             <th>Итого</th>
             <th style="width: 220px;">Статус</th>
         </tr>
@@ -21,33 +23,53 @@
             <td>{{ order.id }}</td>
             <td>{{ order.date|date:"d.m.Y H:i" }}</td>
 
-            <!-- Информация о клиенте -->
+            <!-- Клиент -->
             <td>
                 {% if order.customer %}
-                <b>{{ order.customer.username }}</b><br>
+                {{ order.customer.username }}<br>
                 <small>{{ order.customer.email|default:"email не указан" }}</small>
                 {% else %}
-                <i>Удалённый клиент</i>
+                <i>удалённый клиент</i>
                 {% endif %}
             </td>
 
-            <!-- Состав заказа -->
+            <!-- Редактирование состава -->
             <td>
-                <ul>
+                <!-- 1. Существующие позиции -->
+                <ul style="margin: 0; padding-left: 15px; list-style: none;">
                     {% for item in order.orderitem_set.all %}
-                    <li>{{ item.service.name }} — {{ item.quantity }} шт. ({{ item.subtotal }} руб.)</li>
+                    <li style="margin-bottom: 5px; display: flex; align-items: center; justify-content: space-between;">
+                        <span>{{ item.service.name }} ({{ item.subtotal }} руб.)</span>
+
+                        <!-- Форма для плюс/минус/удалить -->
+                        <form method="POST" action="{% url 'order_edit_item' item.id %}" style="display: inline-flex; align-items: center; margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="minus" class="btn-base btn-blue" style="padding: 0 6px; font-size: 14px; height: 24px; border-radius: 4px;">−</button>
+                            <span style="margin: 0 5px; font-size: 14px;">{{ item.quantity }}</span>
+                            <button type="submit" name="action" value="plus" class="btn-base btn-green" style="padding: 0 6px; font-size: 14px; height: 24px; border-radius: 4px;">+</button>
+                            <button type="submit" name="action" value="delete" class="btn-base btn-red" style="padding: 0 6px; font-size: 14px; height: 24px; border-radius: 4px; margin-left: 5px;">x</button>
+                        </form>
+                    </li>
                     {% endfor %}
                 </ul>
-                {% if order.comment %}
-                <div">
-                    <b>Комментарий:</b> {{ order.comment }}
-                </div>
-                {% endif %}
+
+                <!-- 2. Добавление новой услуги -->
+                <form method="POST" action="{% url 'order_add_item' order.id %}" style="margin-top: 10px; display: flex; gap: 5px;">
+                    {% csrf_token %}
+                    <select name="service_id" class="form-control" style="height: 30px; font-size: 13px; padding: 2px 5px;" required>
+                        <option value="" disabled selected>+ Добавить услугу...</option>
+                        {% for service in services %}
+                        <option value="{{ service.id }}">{{ service.name }} ({{ service.price }} руб.)</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn-base btn-brand" style="padding: 0 10px; height: 30px; font-size: 13px; white-space: nowrap;">Добавить</button>
+                </form>
             </td>
 
-            <td>{{ order.total }} руб.</td>
+            <!-- Сумма -->
+            <td style="color: #d17b4c;">{{ order.total }} руб.</td>
 
-            <!-- Форма смены статуса -->
+            <!-- Управление статусом -->
             <td>
                 <form method="POST" action="{% url 'order_update_status' order.id %}">
                     {% csrf_token %}
@@ -62,9 +84,7 @@
                             {% endfor %}
                         </select>
                         <span class="input-group-btn">
-                            <button type="submit" class="btn-base btn-blue" style="padding: 6px 15px; border-radius: 0 4px 4px 0;">
-                                ОК
-                            </button>
+                            <button type="submit" class="btn-base btn-brand" style="padding: 6px 15px; border-radius: 0 4px 4px 0;">ОК</button>
                         </span>
                     </div>
                 </form>
@@ -73,10 +93,10 @@
         {% endfor %}
     </tbody>
 </table>
+
 {% else %}
 <div class="info-block">
     <p class="description">Заказов пока нет.</p>
 </div>
 {% endif %}
-
 {% endblock %}
