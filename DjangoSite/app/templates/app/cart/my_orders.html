@@ -1,26 +1,51 @@
 {% extends "app/layout.html" %}
+{% load static %}
+
 {% block content %}
 <h1 class="title">Мои заказы</h1>
-<p class="description">История ваших записей на услуги центра.</p>
 
-{% for order in orders %}
-<hr />
-<div class="info-block">
-    <h2 class="subtitle">Заказ №{{ order.id }} от {{ order.date }}</h2>
-    <p class="description"><b>Статус:</b> {{ order.get_status_display }}</p>
+{% if orders %}
+<table class="table table-bordered description mt-4">
+    <thead>
+        <tr>
+            <th style="width: 60px;">№</th>
+            <th>Дата</th>
+            <th>Состав заказа</th>
+            <th>Итого</th>
+            <th style="width: 150px;">Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <!-- ИСПОЛЬЗУЕМ revcounter (обратный счетчик) -->
+            <td>{{ forloop.revcounter }}</td>
 
-    {% if order.comment %}
-    <p class="description"><b>Ваш комментарий:</b> {{ order.comment }}</p>
-    {% endif %}
+            <td>{{ order.date|date:"d.m.Y H:i" }}</td>
 
-    <ul class="description">
-        {% for item in order.orderitem_set.all %}
-        <li>{{ item.service.name }} — {{ item.quantity }} шт. = {{ item.subtotal }} руб.</li>
+            <td>
+                <ul style="margin: 0; padding-left: 15px;">
+                    {% for item in order.orderitem_set.all %}
+                    <li>{{ item.service.name }} — {{ item.quantity }} шт. = {{ item.subtotal }} руб.</li>
+                    {% endfor %}
+                </ul>
+                {% if order.comment %}
+                <div style="margin-top: 5px; font-size: 13px; color: #666;">
+                    Комментарий: {{ order.comment }}
+                </div>
+                {% endif %}
+            </td>
+
+            <td>{{ order.total }} руб.</td>
+
+            <td>{{ order.get_status_display }}</td>
+        </tr>
         {% endfor %}
-    </ul>
-    <p class="description"><b>Итого:</b> {{ order.total }} руб.</p>
+    </tbody>
+</table>
+{% else %}
+<div class="info-block">
+    <p class="description">Вы еще не делали заказов.</p>
 </div>
-{% empty %}
-<p class="description">Вы еще не делали заказов.</p>
-{% endfor %}
+{% endif %}
 {% endblock %}

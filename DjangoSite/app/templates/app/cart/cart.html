@@ -45,6 +45,16 @@
     </div>
 </form>
 {% else %}
-<p class="description">Корзина пуста.</p>
+<div class="text-center" style="padding: 15px 20px;">
+    <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-7359557-6024626.png" alt="Пустая корзина" style="max-width: 220px; margin-bottom: 10px;">
+
+    <h2 class="subtitle" style="margin-top: 0; margin-bottom: 10px;">Ваша корзина пуста</h2>
+
+    <p class="description" style="max-width: 500px; margin: 0 auto 15px;">
+        Вы еще не добавили ни одной услуги. Перейдите в каталог, чтобы выбрать подходящее занятие.
+    </p>
+
+    <a href="{% url 'catalog' %}" class="btn-base btn-brand">Перейти в каталог</a>
+</div>
 {% endif %}
 {% endblock %}

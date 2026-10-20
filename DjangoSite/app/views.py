@@ -161,6 +161,7 @@ def blogpost(request, parametr):
             'form': form,
         }
     )
+
 def newpost(request):
     assert isinstance(request, HttpRequest)
 
@@ -254,22 +255,7 @@ def get_cart(request):
     return cart
 
 
-@login_required
-def cart_checkout(request):
-    raise Exception("СТОП! ФОРМА ДОШЛА ДО СЕРВЕРА!") # <--- ДОБАВЬТЕ ЭТУ СТРОКУ
-    
-    cart = get_cart(request)
 
-    if request.method == "POST":
-        # Выведем в консоль ВСЁ, что пришло
-        print("=== ПРИШЕЛ POST ЗАПРОС ===")
-        print(request.POST)
-        
-        # Временно прервем выполнение и покажем данные на экране
-        return HttpResponse(f"<h1>Данные, которые пришли:</h1><p>{request.POST}</p>")
-    
-    # Если это GET-запрос (просто открыли страницу)
-    return HttpResponse("<h1>Это GET-запрос. Оформите заказ через корзину.</h1>")
 
 @login_required
 def cart_view(request):
@@ -423,3 +409,18 @@ def order_done(request, order_id):
     order.status = 'done'
     order.save()
     return redirect('orders_manage')
+
+@staff_member_required
+def order_update_status(request, order_id):
+    """Изменение статуса заказа менеджером."""
+    order = get_object_or_404(Order, id=order_id)
+    
+    if request.method == "POST":
+        new_status = request.POST.get('status')
+        # Проверяем, что статус существует в модели
+        if new_status in dict(Order.STATUS_CHOICES):
+            order.status = new_status
+            order.save()
+            
+    return redirect('orders_manage')
+

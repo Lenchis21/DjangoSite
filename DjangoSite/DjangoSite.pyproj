@@ -63,7 +63,6 @@
   <ItemGroup>
     <Content Include="app\static\app\content\АвтоматизацияЗвукаР.jpg" />
     <Content Include="app\static\app\content\Физкультминутка.jpg" />
-    <Content Include="app\static\app\scripts\cart.js" />
     <Content Include="app\templates\app\services\add_category.html" />
     <Content Include="app\templates\app\services\add_service.html" />
     <Content Include="app\templates\app\cart\cart.html" />

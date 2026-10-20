@@ -2,30 +2,81 @@
 {% block content %}
 
 <h1 class="title">Управление заказами</h1>
-<p class="description">Здесь вы можете просматривать заказы всех клиентов и отмечать их выполненными.</p>
 
-{% for order in orders %}
-<hr />
-<div class="info-block">
-    <h2 class="subtitle">Заказ №{{ order.id }} от {{ order.date }}</h2>
-    <p class="description">
-        <b>Клиент:</b>
-        {% if order.customer %}{{ order.customer.username }}
-        {% else %}<i>удалённый клиент</i>{% endif %}
-    </p>
-    <p class="description"><b>Статус:</b> {{ order.get_status_display }}</p>
-    <ul class="description">
-        {% for item in order.orderitem_set.all %}
-        <li>{{ item.service.name }} — {{ item.quantity }} шт. = {{ item.subtotal }}</li>
+{% if orders %}
+<table class="table table-bordered description mt-4">
+    <thead>
+        <tr>
+            <th style="width: 60px;">№</th>
+            <th>Дата</th>
+            <th>Клиент</th>
+            <th>Состав заказа</th>
+            <th>Итого</th>
+            <th style="width: 220px;">Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.date|date:"d.m.Y H:i" }}</td>
+
+            <!-- Информация о клиенте -->
+            <td>
+                {% if order.customer %}
+                <b>{{ order.customer.username }}</b><br>
+                <small>{{ order.customer.email|default:"email не указан" }}</small>
+                {% else %}
+                <i>Удалённый клиент</i>
+                {% endif %}
+            </td>
+
+            <!-- Состав заказа -->
+            <td>
+                <ul>
+                    {% for item in order.orderitem_set.all %}
+                    <li>{{ item.service.name }} — {{ item.quantity }} шт. ({{ item.subtotal }} руб.)</li>
+                    {% endfor %}
+                </ul>
+                {% if order.comment %}
+                <div">
+                    <b>Комментарий:</b> {{ order.comment }}
+                </div>
+                {% endif %}
+            </td>
+
+            <td>{{ order.total }} руб.</td>
+
+            <!-- Форма смены статуса -->
+            <td>
+                <form method="POST" action="{% url 'order_update_status' order.id %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <select name="status" class="form-control" style="height: 34px;">
+                            {% for value, display in order.STATUS_CHOICES %}
+                            {% if value != 'cart' %}
+                            <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>
+                                {{ display }}
+                            </option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn-base btn-blue" style="padding: 6px 15px; border-radius: 0 4px 4px 0;">
+                                ОК
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
-    <p class="description"><b>Итого:</b> {{ order.total }} руб.</p>
-
-    {% if order.status == 'new' %}
-    <a href="{% url 'order_done' order.id %}" class="btn-base btn-green">Отметить выполненным</a>
-    {% endif %}
+    </tbody>
+</table>
+{% else %}
+<div class="info-block">
+    <p class="description">Заказов пока нет.</p>
 </div>
-{% empty %}
-<p class="description">Заказов нет.</p>
-{% endfor %}
+{% endif %}
+
 {% endblock %}

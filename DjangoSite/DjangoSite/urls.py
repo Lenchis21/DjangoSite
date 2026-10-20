@@ -54,6 +54,8 @@ urlpatterns = [
     path('myorders/', views.my_orders, name='my_orders'),
     path('manage/orders/', views.orders_manage, name='orders_manage'),
     path('manage/orders/<int:order_id>/done/', views.order_done, name='order_done'),
+
+    path('manage/orders/update/<int:order_id>/', views.order_update_status, name='order_update_status'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

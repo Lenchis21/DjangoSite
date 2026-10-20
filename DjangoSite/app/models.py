@@ -1,8 +1,4 @@
-﻿from pyexpat import model
-from tabnanny import verbose
-from turtle import mode
-from unicodedata import category
-from django.db import models
+﻿from django.db import models
 from django.contrib import admin
 from datetime import datetime
 from django.urls import reverse
@@ -106,8 +102,13 @@ class Order(models.Model):
     STATUS_CHOICES = (
         ('cart', 'Корзина'),
         ('new', 'Новый'),
+        ('processing', 'В обработке'),
         ('done', 'Выполнен'),
+        ('cancelled', 'Отменён'),  
     )
+
+
+
     customer = models.ForeignKey(
         User, null=True, blank=True,
         on_delete=models.SET_NULL,
