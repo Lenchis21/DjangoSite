@@ -1,0 +1,12 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<h2 class="title">{{ title }}</h2>
+<div class="content-wrapper" style="max-width: 600px; margin: 0 auto;">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-base btn-brand">Сохранить</button>
+        <a href="{% url 'admin_catalog' %}" class="btn-base btn-blue">Отмена</a>
+    </form>
+</div>
+{% endblock %}

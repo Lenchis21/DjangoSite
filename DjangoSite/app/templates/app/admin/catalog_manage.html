@@ -1,0 +1,55 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<h1 class="title">Управление каталогом</h1>
+
+<div class="row mt-4">
+    <!-- Левая колонка: Категории -->
+    <div class="col-md-5">
+        <div class="info-block" style="text-align: left;">
+            <h2 class="subtitle" style="margin-top: 0;">Категории</h2>
+            <a href="{% url 'add_category' %}" class="btn-base btn-green mb-3" style="padding: 5px 15px; font-size: 14px;">+ Добавить категорию</a>
+
+            <ul class="description" style="list-style: none; padding-left: 0;">
+                {% for cat in categories %}
+                <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 10px 0;">
+                    <span>{{ cat.name }}</span>
+                    <div>
+                        <a href="{% url 'edit_category' cat.id %}" class="btn-base btn-blue" style="padding: 3px 8px; font-size: 12px;">Изм.</a>
+                        <a href="{% url 'delete_category' cat.id %}" class="btn-base btn-red" style="padding: 3px 8px; font-size: 12px;">Удал.</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Правая колонка: Услуги -->
+    <div class="col-md-7">
+        <div class="info-block" style="text-align: left;">
+            <h2 class="subtitle" style="margin-top: 0;">Услуги</h2>
+            <a href="{% url 'add_service' %}" class="btn-base btn-green mb-3" style="padding: 5px 15px; font-size: 14px;">+ Добавить услугу</a>
+
+            <ul class="description" style="list-style: none; padding-left: 0;">
+                {% for service in services %}
+                <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 10px 0;">
+                    <div>
+                        <strong>{{ service.name }}</strong><br>
+                        <small style="color: #888;">{{ service.category.name }} | {{ service.price }} руб.</small>
+                    </div>
+                    <div>
+                        <a href="{% url 'edit_service' service.id %}" class="btn-base btn-blue" style="padding: 3px 8px; font-size: 12px;">Изм.</a>
+                        <a href="{% url 'delete_service' service.id %}" class="btn-base btn-red" style="padding: 3px 8px; font-size: 12px;">Удал.</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 mb-5">
+<a href="{% url 'admin_dashboard' %}" class="btn-base btn-brand">← Назад</a>
+</div>
+{% endblock %}

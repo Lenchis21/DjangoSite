@@ -44,6 +44,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Управление <b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                            <li><a href="{% url 'admin_dashboard' %}">Панель администратора</a></li> <!-- НОВАЯ СТРОКА -->
                             <li><a href="{% url 'newpost' %}">Добавить статью</a></li>
                             <li><a href="{% url 'add_category' %}">Добавить категорию</a></li>
                             <li><a href="{% url 'add_service' %}">Добавить услугу</a></li>

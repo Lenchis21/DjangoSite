@@ -58,7 +58,24 @@ urlpatterns = [
     path('manage/orders/update/<int:order_id>/', views.order_update_status, name='order_update_status'),
 
     path('manage/orders/edit-item/<int:item_id>/', views.order_edit_item, name='order_edit_item'),
-path('manage/orders/add-item/<int:order_id>/', views.order_add_item, name='order_add_item'),
+    path('manage/orders/add-item/<int:order_id>/', views.order_add_item, name='order_add_item'),
+
+
+    path('editpost/<int:parametr>/', views.edit_blogpost, name='edit_blogpost'),
+    path('deletepost/<int:parametr>/', views.delete_blogpost, name='delete_blogpost'),
+
+    # Управление каталогом
+    path('admin-panel/', views.admin_dashboard, name='admin_dashboard'),
+
+    path('admin-panel/catalog/', views.admin_catalog, name='admin_catalog'),
+    path('admin-panel/catalog/edit-category/<int:category_id>/', views.edit_category, name='edit_category'),
+    path('admin-panel/catalog/delete-category/<int:category_id>/', views.delete_category, name='delete_category'),
+    path('admin-panel/catalog/edit-service/<int:service_id>/', views.edit_service, name='edit_service'),
+    path('admin-panel/catalog/delete-service/<int:service_id>/', views.delete_service, name='delete_service'),
+
+    path('admin-panel/users/', views.admin_users, name='admin_users'),
+    path('admin-panel/users/<int:user_id>/role/', views.change_user_role, name='change_user_role'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

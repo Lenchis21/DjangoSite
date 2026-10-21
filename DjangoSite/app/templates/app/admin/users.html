@@ -1,0 +1,54 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<h1 class="title">Управление пользователями</h1>
+<p class="description">Здесь вы можете назначать роли менеджеров или удалять пользователей.</p>
+
+<table class="table table-bordered description mt-4">
+    <thead>
+        <tr>
+            <th>Логин</th>
+            <th>Email</th>
+            <th>Роль</th>
+            <th style="width: 250px;">Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.username }}</td>
+            <td>{{ u.email|default:"—" }}</td>
+            <td>
+                {% if u.is_superuser %}<span style="color: #d9534f;">Администратор</span>
+                {% elif u.is_staff %}<span style="color: #428bca;">Менеджер</span>
+                {% else %}Клиент{% endif %}
+            </td>
+            <td>
+                {% if u != request.user %}
+                <form method="POST" action="{% url 'change_user_role' u.id %}" style="display: flex; gap: 5px;">
+                    {% csrf_token %}
+                    {% if not u.is_staff %}
+                    <button type="submit" name="action" value="make_manager" class="btn-base btn-green" style="padding: 4px 10px; font-size: 12px;">Сделать менеджером</button>
+                    {% elif u.is_staff and not u.is_superuser %}
+                    <button type="submit" name="action" value="make_client" class="btn-base btn-blue" style="padding: 4px 10px; font-size: 12px;">Сделать клиентом</button>
+                    {% endif %}
+
+                    {% if not u.is_superuser %}
+                    <button type="submit" name="action" value="delete" class="btn-base btn-red" style="padding: 4px 10px; font-size: 12px;">Удалить</button>
+                    {% endif %}
+                </form>
+                {% else %}
+                <span class="text-muted" style="font-size: 13px;">Это вы</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="mt-4 mb-5">
+    <a href="{% url 'admin_dashboard' %}" class="btn-base btn-brand">← Назад</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<h2 class="title">{{ title }}</h2>
+
+<div class="content-wrapper" style="max-width: 600px; margin: 0 auto;">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            {{ blogform.as_p }}
+            <!-- Кнопка с другим текстом, так как это редактирование -->
+            <button type="submit" class="btn-base btn-brand">Сохранить изменения</button>
+
+            <!-- Кнопка отмены, чтобы вернуться назад -->
+            <a href="{% url 'blog' %}" class="btn-base btn-blue">Отмена</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

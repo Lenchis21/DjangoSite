@@ -495,3 +495,170 @@ hr {
     background: #fff;
     pointer-events: none; /* Запрещает кликать по инпуту */
 }
+
+/* ========================================
+   СТИЛИ ДЛЯ ПАНЕЛИ АДМИНИСТРАТОРА
+   ======================================== */
+
+.admin-wrapper {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    align-items: flex-start;
+}
+
+/* Левое меню (Сайдбар) */
+.admin-sidebar {
+    flex: 0 0 260px;
+    background: #fff;
+    border-radius: 24px;
+    padding: 25px 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+.admin-nav-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background: #fdfcfb;
+    border: 1px solid #f0e6df;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+    .admin-nav-link:hover {
+        background: #f5ede5;
+        border-color: #d17b4c;
+        color: #d17b4c;
+        transform: translateX(5px);
+        text-decoration: none;
+    }
+
+/* Правая часть (Контент) */
+.admin-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    min-width: 0; /* Чтобы таблицы не вылезали за пределы */
+}
+
+/* Карточки статистики */
+.admin-stats-row {
+    display: flex;
+    gap: 20px;
+}
+
+.admin-stat-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    position: relative;
+    overflow: hidden;
+}
+
+    .admin-stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+    }
+
+    .admin-stat-card.orders::before {
+        background: #d17b4c;
+    }
+
+    .admin-stat-card.services::before {
+        background: #428bca;
+    }
+
+    .admin-stat-card.users::before {
+        background: #5cb85c;
+    }
+
+.admin-stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 5px;
+    font-family: 'Inter', sans-serif;
+}
+
+.admin-stat-card.orders .admin-stat-value {
+    color: #d17b4c;
+}
+
+.admin-stat-card.services .admin-stat-value {
+    color: #428bca;
+}
+
+.admin-stat-card.users .admin-stat-value {
+    color: #5cb85c;
+}
+
+.admin-stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Панели с контентом (таблицы) */
+.admin-panel {
+    background: #fff;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+.admin-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0e6df;
+    padding-bottom: 15px;
+}
+
+    .admin-panel-header h3 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: #333;
+    }
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .admin-wrapper {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        flex: auto;
+    }
+
+    .admin-stats-row {
+        flex-direction: column;
+    }
+}
