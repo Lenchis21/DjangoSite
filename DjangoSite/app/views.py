@@ -558,20 +558,15 @@ def delete_service(request, service_id):
     return redirect('admin_catalog')
 
 @staff_member_required
-def admin_dashboard(request):
+def admin_blog(request):
+    """Управление новостями (блогом) для администратора."""
     if not request.user.is_superuser:
         return redirect('home')
         
-    total_orders = Order.objects.exclude(status='cart').count()
-    total_services = Service.objects.count()
-    total_users = User.objects.count()
-    all_posts = Blog.objects.all().order_by('-posted') # <-- ВАЖНО
+    all_posts = Blog.objects.all().order_by('-posted')
     
-    return render(request, 'app/admin/dashboard.html', {
-        'total_orders': total_orders,
-        'total_services': total_services,
-        'total_users': total_users,
-        'all_posts': all_posts, # <-- ВАЖНО
+    return render(request, 'app/admin/manage_news.html', {
+        'all_posts': all_posts, 
         'year': datetime.now().year,
     })
 

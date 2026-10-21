@@ -65,7 +65,7 @@
     <Content Include="app\static\app\content\АвтоматизацияЗвукаР.jpg" />
     <Content Include="app\static\app\content\Физкультминутка.jpg" />
     <Content Include="app\templates\app\admin\catalog_manage.html" />
-    <Content Include="app\templates\app\admin\dashboard.html" />
+    <Content Include="app\templates\app\admin\manage_news.html" />
     <Content Include="app\templates\app\admin\edit_category.html" />
     <Content Include="app\templates\app\admin\edit_service.html" />
     <Content Include="app\templates\app\admin\users.html" />

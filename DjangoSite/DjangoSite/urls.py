@@ -65,7 +65,7 @@ urlpatterns = [
     path('deletepost/<int:parametr>/', views.delete_blogpost, name='delete_blogpost'),
 
     # Управление каталогом
-    path('admin-panel/', views.admin_dashboard, name='admin_dashboard'),
+    path('admin-panel/news/', views.admin_blog, name='admin_blog'), 
 
     path('admin-panel/catalog/', views.admin_catalog, name='admin_catalog'),
     path('admin-panel/catalog/edit-category/<int:category_id>/', views.edit_category, name='edit_category'),
