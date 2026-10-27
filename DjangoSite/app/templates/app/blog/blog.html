@@ -6,26 +6,21 @@
 
 {% for post in posts %}
 <div class="mb-4">
-    <!-- Заголовок по центру -->
     <h2 class="subtitle text-center">{{ post.title }}</h2>
 
-    <!-- Дата слева -->
-    <div class="description" style="font-size: 14px; color: #888;">
+    <div class="description">
         {{ post.posted }}
     </div>
 
-    <!-- Текст с красной строкой -->
     <p class="description text-indent mt-3">{{ post.description }}</p>
 
-    <!-- Блок с кнопками -->
     <div class="text-right">
         <a class="btn-base btn-brand" href="{% url 'blogpost' parametr=post.id %}">Читать далее</a>
 
         {% if user.is_superuser %}
-        <a href="{% url 'edit_blogpost' parametr=post.id %}" class="btn-base btn-blue" style="margin-left: 5px;">Редактировать</a>
+        <a href="{% url 'edit_blogpost' parametr=post.id %}" class="btn-base btn-blue">Редактировать</a>
 
-        <!-- Убрали onclick="return confirm(...)" -->
-        <a href="{% url 'delete_blogpost' parametr=post.id %}" class="btn-base btn-red" style="margin-left: 5px;">Удалить</a>
+        <a href="{% url 'delete_blogpost' parametr=post.id %}" class="btn-base btn-red">Удалить</a>
         {% endif %}
     </div>
 </div>

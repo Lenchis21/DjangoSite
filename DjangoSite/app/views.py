@@ -204,7 +204,7 @@ def catalog(request):
     categories = ServiceCategory.objects.all()
     return render(request, 'app/services/catalog.html', {
         'categories': categories,
-        'title': 'Каталог услуг'
+        'title': 'Каталог'
     })
 
 def category_services(request, category_id):
@@ -559,7 +559,7 @@ def delete_service(request, service_id):
 
 @staff_member_required
 def admin_blog(request):
-    """Управление новостями (блогом) для администратора."""
+    """Управление новостями (блогом)для администратора."""
     if not request.user.is_superuser:
         return redirect('home')
         

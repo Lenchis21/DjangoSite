@@ -5,14 +5,15 @@
 
 <div class="row">
     {% for category in categories %}
+
     <div class="col-md-4 mb-4">
+    
         <div class="card catalog-card">
             <div class="card-body catalog-card-body">
+        
                 <a href="{{ category.get_absolute_url }}" class="subtitle">{{ category.name }}</a>
                 <div class="description catalog-card-desc">{{ category.description|truncatewords:20 }}</div>
-
-               
-                    <a href="{{ category.get_absolute_url }}" class="btn-base btn-brand catalog-card-btn">Смотреть услуги</a>
+                <a href="{{ category.get_absolute_url }}" class="btn-base btn-brand catalog-card-btn">Смотреть услуги</a>
                
             </div>
         </div>

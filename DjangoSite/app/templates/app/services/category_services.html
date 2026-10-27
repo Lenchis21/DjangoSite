@@ -11,6 +11,7 @@
     <div class="col-md-6 mb-4">
         <div class="card h-100">
             <div class="row no-gutters">
+
                 <div class="col-md-4">
                     {% if service.image %}
                     <img src="{{ service.image.url }}" class="card-img" alt="{{ service.name }}">
@@ -18,12 +19,15 @@
                     <img src="{% static 'app/img/default_service.jpg' %}" class="card-img" alt="Услуга">
                     {% endif %}
                 </div>
+
                 <div class="col-md-8">
                     <div class="card-body">
                         <div>
                             <a class="subtitle" href="{{ service.get_absolute_url }}">{{ service.name }}</a>
                         </div>
+
                         <p class="description">{{ service.short_description }}</p>
+
                         <p class="description">
                             {% if service.price %}
                             <strong>Цена:</strong> {{ service.price }} руб.
@@ -31,6 +35,7 @@
                             <span class="text-success">Бесплатно / Уточняйте</span>
                             {% endif %}
                         </p>
+
                         <p class="card-text">
                             <small class="text-muted">
                                 Длительность: {{ service.duration }} |

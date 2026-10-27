@@ -6,7 +6,6 @@
 <h1 class="title mb-4">{{ service.name }}</h1>
 
 <div class="row align-items-start mb-4">
-    <!-- Левая колонка с картинкой -->
     <div class="col-md-5 mb-3 mb-md-0">
         {% if service.image %}
         <img src="{{ service.image.url }}" alt="{{ service.name }}" class="img-fluid rounded shadow-sm">
@@ -17,7 +16,6 @@
         {% endif %}
     </div>
 
-    <!-- Правая колонка с описанием и таблицей -->
     <div class="col-md-7">
         <p class="lead subtitle mb-3">{{ service.short_description }}</p>
 
@@ -48,7 +46,6 @@
     </div>
 </div>
 
-<!-- Полное описание -->
 <div class="row mb-4">
     <div class="col-12">
         <div class="card bg-white border-0 shadow-sm">
@@ -59,7 +56,6 @@
     </div>
 </div>
 
-<!-- Блок с кнопками по центру -->
 <div class="text-center mb-5 mt-4 pt-3 border-top">
     <a href="{% url 'catalog' %}" class="btn-base btn-brand">
         ← К списку категорий
@@ -79,6 +75,4 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- Подключаем скрипт, который оживит кнопку "Записаться" -->
-<script src="{% static 'app/scripts/cart.js' %}"></script>
 {% endblock %}

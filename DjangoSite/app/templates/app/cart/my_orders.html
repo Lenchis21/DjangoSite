@@ -2,13 +2,13 @@
 {% load static %}
 
 {% block content %}
-<h1 class="title">Мои заказы</h1>
+<h1 class="title">Мои занятия</h1>
 
 {% if orders %}
 <table class="table table-bordered description mt-4">
     <thead>
         <tr>
-            <th style="width: 60px;">№</th>
+            <th>№</th>
             <th>Дата</th>
             <th>Состав заказа</th>
             <th>Итого</th>
@@ -18,19 +18,18 @@
     <tbody>
         {% for order in orders %}
         <tr>
-            <!-- ИСПОЛЬЗУЕМ revcounter (обратный счетчик) -->
             <td>{{ forloop.revcounter }}</td>
 
             <td>{{ order.date|date:"d.m.Y H:i" }}</td>
 
             <td>
-                <ul style="margin: 0; padding-left: 15px;">
+                <ul>
                     {% for item in order.orderitem_set.all %}
                     <li>{{ item.service.name }} — {{ item.quantity }} шт. = {{ item.subtotal }} руб.</li>
                     {% endfor %}
                 </ul>
                 {% if order.comment %}
-                <div style="margin-top: 5px; font-size: 13px; color: #666;">
+                <div>
                     Комментарий: {{ order.comment }}
                 </div>
                 {% endif %}

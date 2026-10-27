@@ -4,6 +4,7 @@
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
         <li><span class="navbar-brand">Привет {{ user.username }}!</span></li>
+
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
     </ul>
 </form>

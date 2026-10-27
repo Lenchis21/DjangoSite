@@ -7,7 +7,6 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Основные стили страницы*/
 body {
     font-weight: 400;
     background: linear-gradient(135deg, #fdfcfb 0%, #f5e9e0 100%);
@@ -20,7 +19,6 @@ body {
 }
 
 
-/* Контейнеры */
 .container.body {
     flex: 1 0 auto;
     width: 100%;
@@ -37,7 +35,6 @@ body {
 }
 
 
-/* Заголовки, текст */
 .title {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
@@ -108,7 +105,6 @@ img {
 }
 
 
-/* Видео */
 video {
     display: block;
     margin: 0 auto;
@@ -119,7 +115,6 @@ video {
 }
 
 
-/* Навигация */
 .navbar {
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(15px);
@@ -228,9 +223,6 @@ video {
             color: white;
         }
 
-
-/* Кнопки  */
-/* Фирменные кнопки (не трогают стандартный Bootstrap) */
 .btn-base {
     border: none;
     padding: 10px 24px;
@@ -290,11 +282,10 @@ a{
         color: white !important;
     }
 
-/* Отступ для первой строки текста (красная строка) */
 .text-indent {
-    text-indent: 30px; /* Размер отступа. Можно поменять на 20px или 40px */
+    text-indent: 30px;
 }
-/* Подвал */
+
 .footer-container {
     flex-shrink: 0;
     background: #2b2b2b;
@@ -313,8 +304,6 @@ a{
         font-size: 14px;
     }
 
-
-/* Разделители, карусель */
 hr {
     border: 0;
     height: 1px;
@@ -327,8 +316,6 @@ hr {
     overflow: hidden;
 }
 
-
-/* Карточки каталога */
 .card {
     height: 100%;
 }
@@ -352,7 +339,6 @@ hr {
     display: flex;
 }
 
-/* Специальные стили для карточек каталога */
 .catalog-card {
     height: 100%;
 }
@@ -372,9 +358,6 @@ hr {
     align-self: center;
 }
 
-
-/* Главная страница)
-   ======================================== */
 .services-grid {
     display: flex;
     flex-wrap: wrap;
@@ -444,7 +427,6 @@ hr {
     font-weight: 500;
 }
 
-/* Стили для блока количества в корзине */
 .quantity {
     display: flex;
     align-items: center;
@@ -493,12 +475,8 @@ hr {
     border: 1px solid #ddd;
     border-radius: 6px;
     background: #fff;
-    pointer-events: none; /* Запрещает кликать по инпуту */
+    pointer-events: none;
 }
-
-/* ========================================
-   СТИЛИ ДЛЯ ПАНЕЛИ АДМИНИСТРАТОРА
-   ======================================== */
 
 .admin-wrapper {
     display: flex;
@@ -507,7 +485,6 @@ hr {
     align-items: flex-start;
 }
 
-/* Левое меню (Сайдбар) */
 .admin-sidebar {
     flex: 0 0 260px;
     background: #fff;
@@ -549,16 +526,14 @@ hr {
         text-decoration: none;
     }
 
-/* Правая часть (Контент) */
 .admin-main {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 25px;
-    min-width: 0; /* Чтобы таблицы не вылезали за пределы */
+    min-width: 0;
 }
 
-/* Карточки статистики */
 .admin-stats-row {
     display: flex;
     gap: 20px;
@@ -623,7 +598,6 @@ hr {
     letter-spacing: 0.5px;
 }
 
-/* Панели с контентом (таблицы) */
 .admin-panel {
     background: #fff;
     border-radius: 24px;
@@ -647,7 +621,6 @@ hr {
         color: #333;
     }
 
-/* Адаптивность */
 @media (max-width: 992px) {
     .admin-wrapper {
         flex-direction: column;
@@ -661,4 +634,118 @@ hr {
     .admin-stats-row {
         flex-direction: column;
     }
+}
+
+.cart-total {
+    color: #d17b4c;
+    font-size: 24px;
+}
+
+.text-danger {
+    color: #d9534f !important;
+}
+
+.empty-cart-block {
+    padding: 15px 20px;
+}
+
+.empty-cart-img {
+    max-width: 220px;
+    margin-bottom: 10px;
+}
+
+.empty-cart-title {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.empty-cart-text {
+    max-width: 500px;
+    margin: 0 auto 15px;
+}
+
+.admin-order-list {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.admin-order-item {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 10px;
+}
+
+.admin-order-form {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+}
+
+.btn-sm {
+    padding: 0 !important;
+    font-size: 16px !important;
+    width: 28px !important;
+    height: 28px !important;
+    line-height: 26px !important;
+    border-radius: 4px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.btn-delete {
+    margin-left: 5px;
+}
+
+.admin-qty {
+    margin: 0 8px;
+    font-size: 15px;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+.admin-add-form {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.admin-select-add {
+    height: 34px !important;
+    font-size: 13px !important;
+    padding: 2px 8px !important;
+    flex-grow: 1;
+}
+
+.btn-add {
+    padding: 0 15px !important;
+    height: 34px !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+}
+
+.admin-status-group {
+    display: flex;
+    width: 100%;
+}
+
+.admin-select-status {
+    height: 34px !important;
+    border-radius: 4px 0 0 4px !important;
+    border-right: none !important;
+    flex-grow: 1;
+}
+
+.btn-status-ok {
+    padding: 0 15px !important;
+    border-radius: 0 4px 4px 0 !important;
+    height: 34px !important;
+    white-space: nowrap;
 }

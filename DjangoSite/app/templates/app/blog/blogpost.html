@@ -16,29 +16,6 @@
 
 <hr>
 
-{% if user.is_authenticated %}
-<h3 class="subtitle mt-4">Добавить комментарий</h3>
-<form method="POST">
-    {% csrf_token %}
-    <div>
-        {{ form.as_p }}
-
-        <!-- Блок с кнопкой, выровненной вправо -->
-        <div class="text-right mt-3">
-            <button type="submit" class="btn-base btn-green">
-                Отправить комментарий
-            </button>
-        </div>
-    </div>
-</form>
-{% else %}
-<h4 class="material-note mt-4">
-    Для добавления своего комментария, пожалуйста, <a href="{% url 'login' %}">авторизуйтесь</a>.
-</h4>
-{% endif %}
-
-<hr>
-
 <h3 class="subtitle mt-4">Комментарии:</h3>
 {% for comment in comments %}
 <div class="mb-3">
@@ -52,5 +29,29 @@
 {% empty %}
 <p class="description">Комментариев пока нет. Будьте первым!</p>
 {% endfor %}
+
+<hr>
+
+{% if user.is_authenticated %}
+<h3 class="subtitle mt-4">Добавить комментарий</h3>
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        {{ form.as_p }}
+
+        <div class="text-right mt-3">
+            <button type="submit" class="btn-base btn-green">
+                Отправить комментарий
+            </button>
+        </div>
+    </div>
+</form>
+{% else %}
+
+<h4 class="material-note mt-4">
+    Для добавления своего комментария, пожалуйста, <a href="{% url 'login' %}">авторизуйтесь</a>.
+</h4>
+
+{% endif %}
 
 {% endblock %}

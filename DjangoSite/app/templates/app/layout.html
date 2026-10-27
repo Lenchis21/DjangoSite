@@ -26,7 +26,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Информация <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'about' %}">О нас</a></li>
-                            <li><a href="{% url 'blog' %}">Блог (Новости)</a></li>
+                            <li><a href="{% url 'blog' %}">Новости</a></li>
                             <li><a href="{% url 'videopost' %}">Видео</a></li>
                             <li><a href="{% url 'link' %}">Полезные ссылки</a></li>
                         </ul>
@@ -40,25 +40,20 @@
                         </ul>
                     </li>
 
-                    {% if user.is_superuser %}
+                    {% if user.is_superuser or user.is_staff %}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Управление <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <!-- Управление контентом -->
+
+                            {% if user.is_superuser %}
                             <li><a href="{% url 'admin_blog' %}">Новостями</a></li>
-
-                            <li class="divider"></li>
-
                             <li><a href="{% url 'admin_catalog' %}">Каталогом</a></li>
-
+                            <li><a href="{% url 'admin_users' %}">Пользователями</a></li>
                             <li class="divider"></li>
+                            {% endif %}
 
-                            <!-- Управление данными -->
-                            <li><a href="{% url 'admin_users' %}">Ролями</a></li>
+                            <li><a href="{% url 'orders_manage' %}">Занятиями</a></li>
 
-                            <li class="divider"></li>
-
-                            <li><a href="{% url 'orders_manage' %}">Заказами</a></li>
                         </ul>
                     </li>
                     {% endif %}
