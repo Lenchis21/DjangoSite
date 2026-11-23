@@ -1,87 +1,97 @@
 {% extends "app/layout.html" %}
 {% load static %}
 
-
 {% block content %}
 
 <h2 class="title">{{ title }}</h2>
 
-{% if not data %}
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-8 col-md-offset-2">
+
+        {% if success %}
+        <div class="text-center info-block" style="padding: 40px 20px;">
+            <h3 class="subtitle">Спасибо! Ваш отзыв отправлен.</h3>
+            <p class="description">Мы обязательно учтем ваши пожелания в нашей работе.</p>
+            <br>
+            <a href="{% url 'pool' %}" class="btn-base btn-blue mt-3">Оставить еще один отзыв</a>
+        </div>
+        {% else %}
+
         <section id="feedbackForm">
             <form method="post" class="form-horizontal">
                 {% csrf_token %}
 
                 <div class="form-group">
-                    <label for="{{form.name.id_for_label}}" class="col-md-3 control-label">{{ form.name.label }}:</label>
-                    <div class="col-md-9">{{ form.name }}</div>
+                    <label for="{{ form.name.id_for_label }}" class="col-sm-3 control-label description">Ваше имя:</label>
+                    <div class="col-sm-9">
+                        {{ form.name }}
+                        {{ form.name.errors }}
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="{{form.email.id_for_label}}" class="col-md-3 control-label">{{ form.email.label }}:</label>
-                    <div class="col-md-9">{{ form.email }}</div>
+                    <label for="{{ form.email.id_for_label }}" class="col-sm-3 control-label description">Email:</label>
+                    <div class="col-sm-9">
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="{{form.rating.id_for_label}}" class="col-md-3 control-label">{{ form.rating.label }}:</label>
-                    <div class="col-md-9">{{ form.rating }}</div>
+                    <label class="col-sm-3 control-label description">Оцените нашу работу:</label>
+                    <div class="col-sm-9">
+                        <!-- Выводим поле. Точки уберет CSS -->
+                        {{ form.rating }}
+                        {{ form.rating.errors }}
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="{{form.liked.id_for_label}}" class="col-md-3 control-label">{{ form.liked.label }}:</label>
-                    <div class="col-md-9">{{ form.liked }}</div>
+                    <label class="col-sm-3 control-label description">Что вам понравилось:</label>
+                    <div class="col-sm-9">
+                        <!-- Выводим поле. Квадратики появятся сами -->
+                        {{ form.liked }}
+                        {{ form.liked.errors }}
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="{{form.age.id_for_label}}" class="col-md-3 control-label">{{ form.age.label }}:</label>
-                    <div class="col-md-9">{{ form.age }}</div>
+                    <label for="{{ form.age.id_for_label }}" class="col-sm-3 control-label description">Возраст ребёнка:</label>
+                    <div class="col-sm-9">
+                        {{ form.age }}
+                        {{ form.age.errors }}
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="{{form.message.id_for_label}}" class="col-md-3 control-label">{{ form.message.label }}:</label>
-                    <div class="col-md-9">{{ form.message }}</div>
+                    <label for="{{ form.message.id_for_label }}" class="col-sm-3 control-label description">Комментарий:</label>
+                    <div class="col-sm-9">
+                        {{ form.message }}
+                        {{ form.message.errors }}
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-offset-3 col-md-9">
+                    <div class="col-sm-offset-3 col-sm-9">
                         <div class="checkbox">
-                            <label>
+                            <label class="description" style="font-weight: 400;">
                                 {{ form.consent }} {{ form.consent.label }}
                             </label>
                         </div>
+                        {{ form.consent.errors }}
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-offset-3 col-md-9">
-                        <input type="submit" value="Отправить" class="btn btn-default" />
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="submit" class="btn-base btn-brand">Отправить отзыв</button>
                     </div>
                 </div>
-
             </form>
         </section>
+
+        {% endif %}
     </div>
 </div>
 
-{% else %}
-<div class="row">
-    <div class="col-md-8">
-        <br><h3>Благодарим за предоставленную информацию!</h3>
-        <p>Ваш выбор следующий:</p>
-        <ul class="list-unstyled">
-            <li><strong>Имя:</strong> {{ data.name }}</li>
-            <li><strong>Email:</strong> {{ data.email }}</li>
-            <li><strong>Понравилось:</strong> {{ data.liked }}</li>
-            <li><strong>Оценка:</strong> {{ data.rating }}</li>
-            <li><strong>Возраст ребенка:</strong> {{ data.age }}</li>
-            <li><strong>Отзыв:</strong> {{ data.message }}</li>
-        </ul>
-    </div>
-</div>
-{% endif %}
-{% endblock %}
-
-{% block scripts %}
-<script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
 {% endblock %}

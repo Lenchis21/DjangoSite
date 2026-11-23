@@ -25,6 +25,7 @@ body {
     max-width: 1100px;
     margin: 0 auto;
     padding: 30px 25px;
+    margin-top: 40px;
 }
 
 .content-wrapper {
@@ -155,11 +156,11 @@ video {
 .navbar-collapse {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center; /* БЫЛО space-between, стало center */
     flex-grow: 1;
     margin-left: 20px;
+    gap: 30px; /* Добавьте это, чтобы меню и кнопки не слипались */
 }
-
 .nav.navbar-nav {
     display: flex;
     gap: 3px;
@@ -167,7 +168,6 @@ video {
     flex-wrap: wrap;
     align-items: center;
     margin: 0;
-    padding: 10px;
 }
 
     .nav.navbar-nav li a {
@@ -209,7 +209,6 @@ video {
         font-family: 'Inter', sans-serif;
         font-weight: 500;
         font-size: 14px;
-        color: #d17b4c;
         padding: 8px 14px;
         border-radius: 20px;
         text-decoration: none;
@@ -314,6 +313,11 @@ hr {
 .carousel-inner {
     border-radius: 20px;
     overflow: hidden;
+}
+
+.carousel {
+    max-width: 500px; /* нужная ширина */
+    margin: 0 auto; /* центрирование */
 }
 
 .card {
@@ -749,3 +753,6 @@ hr {
     height: 34px !important;
     white-space: nowrap;
 }
+
+
+

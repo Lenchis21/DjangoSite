@@ -44,16 +44,13 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Управление <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-
                             {% if user.is_superuser %}
                             <li><a href="{% url 'admin_blog' %}">Новостями</a></li>
                             <li><a href="{% url 'admin_catalog' %}">Каталогом</a></li>
                             <li><a href="{% url 'admin_users' %}">Пользователями</a></li>
                             <li class="divider"></li>
                             {% endif %}
-
                             <li><a href="{% url 'orders_manage' %}">Занятиями</a></li>
-
                         </ul>
                     </li>
                     {% endif %}
@@ -62,12 +59,16 @@
                     <li><a href="{% url 'my_orders' %}">Мои занятия</a></li>
                     <li><a href="{% url 'cart_view' %}">Корзина</a></li>
                     {% endif %}
+                </ul>
 
+                <ul class="nav navbar-nav navbar-right">
                     {% if not user.is_authenticated %}
                     <li><a href="{% url 'registration' %}">Регистрация</a></li>
                     {% endif %}
+
+                    {# Обертка li нужна для применения стилей меню к ссылке Войти #}
+                    <li>{% include 'app/auth/loginpartial.html' %}</li>
                 </ul>
-                {% include 'app/auth/loginpartial.html' %}
             </div>
         </div>
     </div>

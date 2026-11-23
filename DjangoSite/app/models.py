@@ -147,6 +147,28 @@ class OrderItem(models.Model):
         verbose_name = "Позиция заказа"
         verbose_name_plural = "Позиции заказа"
 
+class Review(models.Model):
+    """Отзывы и результаты опроса клиентов"""
+    name = models.CharField("Имя", max_length=100)
+    email = models.EmailField("Email")
+    rating = models.IntegerField("Оценка", choices=RATING_CHOICES, default=5)
+    liked = models.CharField("Что понравилось", max_length=255, blank=True) 
+    age = models.CharField("Возраст ребенка", max_length=50, choices=AGE_CHOICES, default='3-4')
+    message = models.TextField("Комментарий")
+    consent = models.BooleanField("Согласие на обработку данных", default=True)
+    created_at = models.DateTimeField("Дата отправки", default=datetime.now)
+
+    def __str__(self):
+        return f"Отзыв от {self.name} ({self.rating} звезд)"
+
+    class Meta:
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"
+        ordering = ["-created_at"]
+
+
+admin.site.register(Review)
+
 admin.site.register(ServiceCategory)
 admin.site.register(Service)
 admin.site.register(Blog)

@@ -1,7 +1,7 @@
 ﻿from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
-from .models import Comment, Blog, Service, ServiceCategory, Order, OrderItem 
+from .models import Comment, Blog, Service, ServiceCategory, Order, OrderItem, Review
 
 
 class BootstrapAuthenticationForm(AuthenticationForm):
@@ -22,6 +22,7 @@ class BootstrapAuthenticationForm(AuthenticationForm):
     )
 
 
+
 class ReviewForm(forms.Form):
     name = forms.CharField(
         label='Ваше имя',
@@ -37,11 +38,11 @@ class ReviewForm(forms.Form):
     rating = forms.ChoiceField(
         label='Оцените нашу работу',
         choices=[(5, 'Отлично'), (4, 'Хорошо'), (3, 'Удовлетворительно'), (2, 'Плохо')],
-        widget=forms.RadioSelect(attrs={'class': 'form-check-input list-unstyled'})
+        widget=forms.RadioSelect() 
     )
     liked = forms.MultipleChoiceField(
         label='Что вам особенно понравилось?',
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input list-unstyled'}),
+        widget=forms.CheckboxSelectMultiple(), 
         choices=[
             ('diagnostic', 'Диагностика'),
             ('sound', 'Постановка звуков'),
@@ -49,7 +50,8 @@ class ReviewForm(forms.Form):
             ('speech', 'Развитие речи'),
             ('school', 'Подготовка к школе'),
             ('other', 'Другое')
-        ]
+        ],
+        required=False
     )
     age = forms.ChoiceField(
         label='Возраст ребёнка',
@@ -60,7 +62,7 @@ class ReviewForm(forms.Form):
             ('6-7', '6-7 лет'),
             ('7+', 'Старше 7 лет'),
         ],
-        widget=forms.Select(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
     message = forms.CharField(
         label='Комментарий',
@@ -69,9 +71,8 @@ class ReviewForm(forms.Form):
     consent = forms.BooleanField(
         label='Согласие на обработку персональных данных',
         required=True,
-        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+        widget=forms.CheckboxInput()
     )
-
 
 class BootstrapRegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
