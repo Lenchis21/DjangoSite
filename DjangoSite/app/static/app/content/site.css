@@ -754,5 +754,15 @@ hr {
     white-space: nowrap;
 }
 
+#feedbackForm ul,
+#feedbackForm li {
+    list-style: none;
+}
+
+#feedbackForm ul {
+    padding-left: 0;
+    margin: 0;
+}
+
 
 

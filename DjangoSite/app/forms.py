@@ -35,6 +35,7 @@ class ReviewForm(forms.Form):
         min_length=7,
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@example.com'})
     )
+
     rating = forms.ChoiceField(
         label='Оцените нашу работу',
         choices=[(5, 'Отлично'), (4, 'Хорошо'), (3, 'Удовлетворительно'), (2, 'Плохо')],

@@ -1,5 +1,4 @@
-﻿
-from datetime import datetime
+﻿from datetime import datetime
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpRequest
 from django.contrib.auth.decorators import user_passes_test
@@ -10,10 +9,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
 
+# ------------------- Предикаты прав ----------------------
+
+is_superuser = user_passes_test(lambda u: u.is_superuser)
+
 # ------------------- Информация сайта ----------------------
 
-def home(request):
-    assert isinstance(request, HttpRequest)
+def home(request): #+
     return render(
         request,
         'app/index.html',
@@ -23,44 +25,45 @@ def home(request):
         }
     )
 
-def contact(request):
-    assert isinstance(request, HttpRequest)
+def contact(request): #+
     return render(
         request,
         'app/contact.html',
         {
             'title':'Контакты',
-            'message':'Ваша страница контактов.',
             'year':datetime.now().year,
         }
     )
 
-def about(request):
-    assert isinstance(request, HttpRequest)
+def about(request): #+
     return render(
         request,
         'app/about.html',
         {
             'title':'О нас',
-            'message':'Страница описания вашего приложения.',
             'year':datetime.now().year,
         }
     )
 
-def link(request):
-    assert isinstance(request, HttpRequest)
+def link(request): #+
     return render(
         request,
         'app/link.html',
         {
             'title':'Полезные ссылки',
-            'message':'Страница описания вашего приложения.',
             'year':datetime.now().year,
         }
     )
 
-def pool(request):
-    assert isinstance(request, HttpRequest)
+def videopost(request): #+
+    return render(
+        request,
+        'app/blog/videopost.html',
+        {
+            'title':'Видео',
+        })
+
+def pool(request): #+
     title = 'Опрос для родителей'
     
     if request.method == 'POST':
@@ -92,7 +95,7 @@ def pool(request):
         'title': title
     })
 
-def registration(request):
+def registration(request): #+
     if request.method == "POST":
         regform = BootstrapRegistrationForm(request.POST) 
         if regform.is_valid():
@@ -114,36 +117,23 @@ def registration(request):
         }
     )
 
-def videopost(request):
-    assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/blog/videopost.html',
-        {
-            'title':'Видео',
-        })
-
 # --------------------------------------------------------------------------
 
 # ---------------------------- Блог ----------------------------------------
-def blog(request):
-    """Renders the blog page."""
-    assert isinstance(request, HttpRequest)
+
+def blog(request): #+
     posts = Blog.objects.all()
     return render(
         request,
-            'app/blog/blog.html',
-            {
-                'title':'Блог',
-                'posts': posts,
-                'year': datetime.now().year,
-            }        
-        
-        )
+        'app/blog/blog.html',
+        {
+            'title':'Новости',
+            'posts': posts,
+            'year': datetime.now().year,
+        }
+    )
 
-def blogpost(request, parametr):
-    """ Renders the blogpost page. """
-    assert isinstance(request, HttpRequest)
+def blogpost(request, parametr): #+
     post_1 = Blog.objects.get(id=parametr)
     comments = Comment.objects.filter(post=parametr)
     
@@ -170,9 +160,8 @@ def blogpost(request, parametr):
         }
     )
 
+@is_superuser
 def newpost(request):
-    assert isinstance(request, HttpRequest)
-
     if request.method == "POST":
         blogform = BlogForm(request.POST, request.FILES)
         if blogform.is_valid():
@@ -185,24 +174,18 @@ def newpost(request):
     else:
         blogform = BlogForm()
 
-
     return render(
         request,
         'app/blog/newpost.html',
-            {
-                'blogform': blogform,
-                'title': 'Добавить статью блога',
+        {
+            'blogform': blogform,
+            'title': 'Добавить новость',
+            'year': datetime.now().year,
+        }
+    )
 
-                'year': datetime.now().year,
-            }
-        )
-
-@staff_member_required
+@is_superuser
 def edit_blogpost(request, parametr):
-    """Редактирование статьи блога (новости)."""
-    if not request.user.is_superuser:
-        return redirect('home') 
-
     post_1 = get_object_or_404(Blog, id=parametr)
     if request.method == "POST":
         blogform = BlogForm(request.POST, request.FILES, instance=post_1)
@@ -214,19 +197,26 @@ def edit_blogpost(request, parametr):
         
     return render(request, 'app/blog/editpost.html', {
         'blogform': blogform,
-        'title': 'Редактировать статью',
+        'title': 'Редактировать новость',
         'year': datetime.now().year,
     })
 
-@staff_member_required
+@is_superuser
 def delete_blogpost(request, parametr):
     """Удаление статьи блога (новости)."""
-    if not request.user.is_superuser:
-        return redirect('home')
-        
     post_1 = get_object_or_404(Blog, id=parametr)
     post_1.delete()
     return redirect('blog')
+
+@is_superuser
+def admin_blog(request):
+    """Управление новостями (блогом) для администратора."""
+    all_posts = Blog.objects.all().order_by('-posted')
+    
+    return render(request, 'app/admin/manage_news.html', {
+        'all_posts': all_posts, 
+        'year': datetime.now().year,
+    })
 
 # ------------------------------ Услуги ------------------------------
 
@@ -243,8 +233,8 @@ def category_services(request, category_id):
     category = get_object_or_404(ServiceCategory, id=category_id)
     services = Service.objects.filter(category=category)
     return render(request, 'app/services/category_services.html', {
-            'category':category,
-            'services':services 
+        'category': category,
+        'services': services
     })
 
 def service_detail(request, service_id):
@@ -253,7 +243,7 @@ def service_detail(request, service_id):
 
 # ======================================================================
 
-@user_passes_test(lambda u: u.is_superuser)
+@is_superuser
 def add_category(request):
     if request.method == 'POST':
         form = ServicesCategoryForm(request.POST)
@@ -265,7 +255,7 @@ def add_category(request):
     return render(request, 'app/services/add_category.html', {'form': form, 'title': 'Добавить категорию'})
 
 
-@user_passes_test(lambda u: u.is_superuser)
+@is_superuser
 def add_service(request):
     if request.method == 'POST':
         form = ServiceForm(request.POST, request.FILES)
@@ -276,12 +266,73 @@ def add_service(request):
         form = ServiceForm()
     return render(request, 'app/services/add_service.html', {'form': form, 'title': 'Добавить услугу'})
 
+@is_superuser
+def admin_catalog(request):
+    """Панель управления каталогом для администратора."""
+    categories = ServiceCategory.objects.all()
+    services = Service.objects.all()
+    
+    return render(request, 'app/admin/catalog_manage.html', {
+        'categories': categories,
+        'services': services,
+        'title': 'Управление каталогом',
+        'year': datetime.now().year,
+    })
+
+@is_superuser
+def edit_category(request, category_id):
+    """Редактирование категории."""
+    category = get_object_or_404(ServiceCategory, id=category_id)
+    if request.method == 'POST':
+        form = ServicesCategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_catalog')
+    else:
+        form = ServicesCategoryForm(instance=category)
+        
+    return render(request, 'app/admin/edit_category.html', {
+        'form': form, 
+        'title': 'Редактировать категорию',
+        'year': datetime.now().year,
+    })
+
+@is_superuser
+def delete_category(request, category_id):
+    """Удаление категории."""
+    category = get_object_or_404(ServiceCategory, id=category_id)
+    category.delete()
+    return redirect('admin_catalog')
+
+@is_superuser
+def edit_service(request, service_id):
+    """Редактирование услуги."""
+    service = get_object_or_404(Service, id=service_id)
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES, instance=service)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_catalog')
+    else:
+        form = ServiceForm(instance=service)
+        
+    return render(request, 'app/admin/edit_service.html', {
+        'form': form, 
+        'title': 'Редактировать услугу',
+        'year': datetime.now().year,
+    })
+
+@is_superuser
+def delete_service(request, service_id):
+    """Удаление услуги."""
+    service = get_object_or_404(Service, id=service_id)
+    service.delete()
+    return redirect('admin_catalog')
+
 # --------------------------------------------------------------------
 
 
-
-
-# --- Корзина ----
+# # ------------------------ Корзина ---------------------------------
 
 @login_required
 def get_cart(request):
@@ -338,7 +389,6 @@ def cart_update(request, item_id):
 
 @login_required
 def cart_update_all(request):
-    """Сохранение всех изменений количеств из корзины"""
     if request.method == "POST":
         cart = get_cart(request)
         items = cart.orderitem_set.all()
@@ -360,14 +410,12 @@ def cart_update_all(request):
 
 @login_required
 def cart_remove(request, item_id):
-    """Удаление позиции из корзины."""
     item = get_object_or_404(OrderItem, id=item_id, order__customer=request.user)
     item.delete()
     return redirect('cart_view')
 
 @login_required
 def cart_checkout(request):
-    """Оформление заказа: корзина становится заказом."""
     cart = get_cart(request)
     if request.method == "POST":
         comment = request.POST.get('comment', '')
@@ -381,7 +429,7 @@ def cart_checkout(request):
     })
 
 
-# --------------------- Заказы -------------------------
+# --------------------- Заказы ------------------------------------------------
 
 @login_required
 def my_orders(request):
@@ -456,117 +504,22 @@ def order_add_item(request, order_id):
             item.save()
             
     return redirect('orders_manage')
+# ----------------------------------------------------------------------
 
+# ------------------ Управление пользователями -------------------------
 
-# --- УПРАВЛЕНИЕ КАТАЛОГОМ (АДМИН) ---
-
-@staff_member_required
-def admin_catalog(request):
-    """Панель управления каталогом для администратора."""
-    if not request.user.is_superuser:
-        return redirect('home')
-        
-    categories = ServiceCategory.objects.all()
-    services = Service.objects.all()
-    
-    return render(request, 'app/admin/catalog_manage.html', {
-        'categories': categories,
-        'services': services,
-        'title': 'Управление каталогом',
-        'year': datetime.now().year,
-    })
-
-@staff_member_required
-def edit_category(request, category_id):
-    """Редактирование категории."""
-    if not request.user.is_superuser:
-        return redirect('home')
-        
-    category = get_object_or_404(ServiceCategory, id=category_id)
-    if request.method == 'POST':
-        form = ServicesCategoryForm(request.POST, instance=category)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_catalog')
-    else:
-        form = ServicesCategoryForm(instance=category)
-        
-    return render(request, 'app/admin/edit_category.html', {
-        'form': form, 
-        'title': 'Редактировать категорию',
-        'year': datetime.now().year,
-    })
-
-@staff_member_required
-def delete_category(request, category_id):
-    """Удаление категории."""
-    if not request.user.is_superuser:
-        return redirect('home')
-        
-    category = get_object_or_404(ServiceCategory, id=category_id)
-    category.delete()
-    return redirect('admin_catalog')
-
-@staff_member_required
-def edit_service(request, service_id):
-    """Редактирование услуги."""
-    if not request.user.is_superuser:
-        return redirect('home')
-        
-    service = get_object_or_404(Service, id=service_id)
-    if request.method == 'POST':
-        form = ServiceForm(request.POST, request.FILES, instance=service)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_catalog')
-    else:
-        form = ServiceForm(instance=service)
-        
-    return render(request, 'app/admin/edit_service.html', {
-        'form': form, 
-        'title': 'Редактировать услугу',
-        'year': datetime.now().year,
-    })
-
-@staff_member_required
-def delete_service(request, service_id):
-    """Удаление услуги."""
-    if not request.user.is_superuser:
-        return redirect('home')
-        
-    service = get_object_or_404(Service, id=service_id)
-    service.delete()
-    return redirect('admin_catalog')
-
-@staff_member_required
-def admin_blog(request):
-    """Управление новостями (блогом) для администратора."""
-    if not request.user.is_superuser:
-        return redirect('home')
-        
-    all_posts = Blog.objects.all().order_by('-posted')
-    
-    return render(request, 'app/admin/manage_news.html', {
-        'all_posts': all_posts, 
-        'year': datetime.now().year,
-    })
-
-@staff_member_required
+@is_superuser
 def admin_users(request):
     """Список пользователей для управления ролями."""
-    if not request.user.is_superuser:
-        return redirect('home')
-        
     users = User.objects.all().order_by('-date_joined')
-    return render(request, 'app/admin/users.html', {'users': users, 'title': 'Пользователи', 'year': datetime.now().year})
+    return render(request, 'app/admin/users.html', {
+        'users': users, 'title': 'Пользователи', 'year': datetime.now().year,
+    })
 
-@staff_member_required
+@is_superuser
 @require_POST
 def change_user_role(request, user_id):
     """Смена роли или удаление пользователя."""
-    if not request.user.is_superuser:
-        return redirect('home')
-        
     user = get_object_or_404(User, id=user_id)
     action = request.POST.get('action')
 
@@ -582,3 +535,5 @@ def change_user_role(request, user_id):
             return redirect('admin_users')
             
     return redirect('admin_users')
+
+# --------------------------------------------------------------------
